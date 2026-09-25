@@ -1,20 +1,12 @@
 -- mod/tests/sb2_prng_test.lua
 -- Standalone test pre sb2_prng.lua. Bezi mimo Starbound (lua5.1 / lua5.3):
---   lua mod/tests/sb2_prng_test.lua
+--   python3 tools/run_lua_tests.py  (alebo lua5.1 mod/tests/sb2_prng_test.lua z korena repa)
 -- V Starbounde sa nespusta – nema ziadne sb.* zavislosti.
 
-package.path = "./mod/scripts/?.lua;" .. package.path
+package.path = "./mod/scripts/?.lua;./mod/tests/?.lua;" .. package.path
 local sb2_prng = require("sb2_prng")
-
-local failures = 0
-local function check(condition, label)
-  if condition then
-    print("PASS  " .. label)
-  else
-    failures = failures + 1
-    print("FAIL  " .. label)
-  end
-end
+local t = require("sb2_test_harness")
+local check = t.check
 
 -- 1. Determinizmus: rovnaky seed -> rovnaka sekvencia
 local a = sb2_prng.new(12345)
@@ -92,10 +84,4 @@ local z = sb2_prng.new(0)
 local neg = sb2_prng.new(-5)
 check(z:next() > 0 and neg:next() >= 0, "seed 0 and negative seed are normalized")
 
-print(string.rep("-", 40))
-if failures == 0 then
-  print("ALL PASS")
-else
-  print(failures .. " FAILED")
-  os.exit(1)
-end
+t.finish()

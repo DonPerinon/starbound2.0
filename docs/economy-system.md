@@ -603,6 +603,7 @@ Detailný checklist sa udržiava v `docs/COMPATIBILITY_TESTING.md` (vytvorí sa 
 
 - **Verzia**: v1 draft
 - **Dátum**: 2026-05-24
-- **Fáza systému**: Design (pred-implementácia)
+- **Fáza systému**: Implementácia jadra (2026-09-25): sekcie 3, 4.1, 4.3, 4.4, 5.4 (dáta), 6.1–6.4, 8.1–8.2 sú v `mod/scripts/` s testami v `mod/tests/`. Sekcie 4.2, 5.1, 5.3, 6.5, 9.2 čakajú na prototypy Q1/Q2 a Q3 (viď `docs/planned-features-analysis.md` sekcia 4).
+- **Poznámka k 2.3**: implementácia berie `trade_flow_arrival` ako nárast ponuky (cena klesá) a `departure` ako pokles ponuky (cena rastie). Znamienka v 2.3 a v príklade 4.1 treba pri revízii v2 zjednotiť.
 - **Cieľová release**: v0.1
 - **Súvisiace docs**: `docs/vision.md`, `CLAUDE.md`, (pripravované) `docs/COMPATIBILITY_TESTING.md`, (pripravované sub-design) `docs/trade-flow-v01.md`, `docs/economy-ui.md`

@@ -108,9 +108,11 @@ Každý netriviálny systém má design doc v `docs/` skôr ako vznikne Lua kód
 - Vanilla Starbound bez FU (FU je tvrdá závislosť)
 
 ## Aktuálny stav projektu
-- **Fáza**: Pred-implementácia, prototypovanie storage vrstvy
+- **Fáza**: Implementácia jadra DPS (čisté moduly hotové), engine hooky čakajú na prototypy
 - **Aktívny systém**: Dynamic Pricing System (v0.1)
-- **Najbližší míľnik**: výsledky prototypu Q1/Q2 (`prototypes/q1_q2_storage_test/`) zapísané do `docs/economy-system.md` sekcia 10, potom storage layer
+- **Hotové moduly**: `sb2_util`, `sb2_config`, `sb2_prng`, `sb2_economy_tags`, `sb2_pricing`, `sb2_market_state`, `sb2_migrations`, `sb2_storage` (testy: `python3 tools/run_lua_tests.py`)
+- **Najbližší míľnik**: výsledky prototypov Q1/Q2 a Q3 (`prototypes/`) zapísané do `docs/economy-system.md`, potom universe backend, merchant hook, day tick host a `sb2_market` terminál
+- **Známa odchýlka od docu**: `trade_flow_arrival` cenu znižuje (viac ponuky), `departure` zvyšuje; doc 2.3/4.1 má znamienka nejednoznačné, vyriešiť pri revízii v2
 - **Analýza stavu**: `docs/planned-features-analysis.md` (2026-09-25)
 
 ## Kľúčové dokumenty
