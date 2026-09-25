@@ -121,6 +121,19 @@ Súhrn: tri z desiatich (01, 04, 07 v abstraktnej forme) sú lacné a priamo pos
 
 Ani jedna z desiatich nie je v vision.md. Ak majú platiť, patria do sekcie Version milestones, inak ostanú ako inšpirácia bez záväzku.
 
+### 5.1 Štyri nové návrhy (2026-09-25)
+
+Vyberané tak, aby každý stál na dátach, ktoré DPS a influence systém už budú mať, a aby neporušili out of scope. Obrazovky sú v `prototypes/planned-features-mockup.html` (Screen 23 až 26).
+
+| # | Feature | Pillar | Verzia | Prečo | Závisí na |
+|---|---|---|---|---|---|
+| 11 | Station Specialization Drift | Economy | v0.5 | Stanice menia špecializáciu podľa reálneho toku tovaru (30-dňový vážený priemer per kategória). Pri ≥ 60 % vznikne bonus `station_specialization`. Hráč môže špecializáciu cielene vybudovať konvojmi. Žiadny nový storage, iba pár čísel v market state. | DPS, trade flows |
+| 12 | Tariffs & Embargoes | Faction × Economy | v0.5 | Frakčná AI nastavuje clá a embargá ako utility akciu vo svojej sfére. V cene sa zobrazí riadok „+12 % clo Apex“. Standing hráča sadzbu mení. Embargo automaticky definuje kontraband pre Blockade Running. | DPS, influence, Standing (05) |
+| 13 | Colony Demand (FU tenanti) | Economy × FU-Native | v0.5 → v1.0 | Tenanti z vanilla/FU kolónií hráča generujú dopyt a spotrebu, kolónia je mini market node. Dáva builderovi dôvod zásobovať vlastnú planétu. Stavia na existujúcom colony systéme, nič neprepisuje. | DPS, Trade Post (03) pre plnú verziu |
+| 14 | Letters of Marque | Faction × Combat | v1.0 | Frakcia vydá privateer licenciu proti rivalovi. Prepad konvoja hýbe vplyvom, heatom a cenami naraz. Hráč je súčasť vojny s jednou loďou, bez RTS flotíl. Licencia zaniká pri mieri. | combat, Standing (05), Heat (07) |
+
+Poznámka k prvému mockupu: obrazovky 01 až 07 ostávajú v `prototypes/features-mockup.html`. Nový mockup ich nekopíruje, iba na ne odkazuje vo Feature Codex tabuľke.
+
 ## 6. Nekonzistencie v repozitári
 
 - **`mod/_metadata` používa `includes` namiesto `requires`.** `includes` je mäkká závislosť (načítaj po FU, ak existuje). Vízia aj economy doc hovoria, že bez FU má mod padnúť pri načítaní. To robí `requires`. Priamy rozpor s pravidlom „no silent failures“.
@@ -145,4 +158,4 @@ Ani jedna z desiatich nie je v vision.md. Ak majú platiť, patria do sekcie Ver
 
 - **Dátum**: 2026-09-25
 - **Analyzovaný commit**: `fca05f9` na `main`
-- **Typ**: jednorazová analýza, neaktualizuje sa
+- **Typ**: jednorazová analýza; sekcia 5.1 a mockup v2 doplnené v ten istý deň

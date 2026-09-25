@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starbound 2.0 — Planned Features Mockup v2</title>
+<style>
+  :root{
+    --space:#05060e;
+    --space-2:#0a0d1d;
+    /* Starbound-ish panel palette */
+    --pn:#222c41;        /* panel fill          */
+    --pn-2:#1a2233;      /* panel fill darker   */
+    --pn-3:#141b29;      /* slot well           */
+    --bevel-lt:#3c4d70;  /* light bevel edge    */
+    --bevel-dk:#070a12;  /* dark bevel edge     */
+    --ink:#e9edf8;
+    --dim:#8a97ba;
+    --teal:#5fd9c6;      /* SB2 accent / UI glow */
+    --gold:#ffd35c;      /* pixels currency      */
+    --hp:#e2484d;
+    --en:#f2b13c;
+    --up:#ff6a5e;        /* price up (red)       */
+    --down:#71e07a;      /* price down (green)   */
+    --apex:#c678dd;
+    --floran:#7bd86a;
+    --human:#56a8ff;
+    --mono:"Courier New",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--space);
+    color:var(--ink);
+    font-family:var(--mono);
+    -webkit-font-smoothing:none;
+    image-rendering:pixelated;
+    line-height:1.5;
+  }
+  img,svg,.scene{image-rendering:pixelated}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+  /* ============================================================
+     TITLE SCREEN
+     ============================================================ */
+  .title{
+    position:relative;overflow:hidden;
+    min-height:74vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    border-bottom:2px solid var(--bevel-dk);
+    background:
+      radial-gradient(120% 80% at 50% 120%, #1d3a63 0 24%, #142a4b 24% 40%, transparent 40%),
+      radial-gradient(80% 60% at 18% 12%, rgba(198,120,221,.16), transparent 60%),
+      radial-gradient(70% 60% at 85% 20%, rgba(86,168,255,.14), transparent 60%),
+      var(--space);
+  }
+  .stars{position:absolute;inset:0;pointer-events:none;
+    background-image:
+      radial-gradient(1px 1px at 12% 22%,#fff,transparent),
+      radial-gradient(1px 1px at 28% 64%,#cfe,transparent),
+      radial-gradient(1px 1px at 47% 18%,#fff,transparent),
+      radial-gradient(1px 1px at 63% 48%,#9bf,transparent),
+      radial-gradient(1px 1px at 78% 28%,#fff,transparent),
+      radial-gradient(1px 1px at 88% 66%,#cdf,transparent),
+      radial-gradient(1px 1px at 38% 82%,#fff,transparent),
+      radial-gradient(1px 1px at 6% 50%,#bce,transparent),
+      radial-gradient(1px 1px at 70% 8%,#fff,transparent);
+    animation:tw 4s steps(2) infinite;
+  }
+  @keyframes tw{50%{opacity:.55}}
+  .title .badge-row{position:relative;z-index:2;margin-bottom:18px}
+  .tag{
+    display:inline-block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--teal);border:2px solid var(--bevel-dk);background:rgba(20,27,41,.7);
+    box-shadow:inset 0 0 0 2px #2c3a57;padding:6px 14px;
+  }
+  .title h1{
+    position:relative;z-index:2;margin:0;
+    font-size:clamp(44px,9vw,104px);font-weight:700;letter-spacing:.02em;
+    color:#fff;
+    text-shadow:0 4px 0 #0a0e18, 4px 0 0 var(--bevel-dk), 0 0 28px rgba(95,217,198,.35);
+  }
+  .title .sub{position:relative;z-index:2;color:var(--gold);font-size:14px;letter-spacing:.3em;margin-top:2px}
+  .title .pitch{position:relative;z-index:2;max-width:620px;color:var(--dim);font-size:14px;margin:22px 16px 0}
+  .scroll-cue{position:relative;z-index:2;margin-top:34px;color:var(--dim);font-size:12px;letter-spacing:.2em;animation:bob 1.4s steps(2) infinite}
+  @keyframes bob{50%{transform:translateY(4px)}}
+  .planet-shadow{position:absolute;left:50%;bottom:-2px;width:140%;height:120px;transform:translateX(-50%);
+    background:radial-gradient(60% 120% at 50% 100%, rgba(0,0,0,.55), transparent 70%);pointer-events:none}
+
+  /* ============================================================
+     SCREENSHOT FRAME
+     ============================================================ */
+  section{padding:60px 0}
+  .scr-head{display:flex;align-items:center;gap:14px;margin:0 0 18px}
+  .scr-head .lbl{font-size:11px;letter-spacing:.28em;color:var(--teal);text-transform:uppercase;
+    border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 2px #2c3a57;background:var(--pn-2);padding:5px 11px}
+  .scr-head h2{font-size:20px;margin:0;letter-spacing:.04em;color:#fff}
+  .scr-head .pillar{margin-left:auto;font-size:12px;color:var(--dim)}
+
+  .screen{
+    position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;
+    background:var(--space-2);
+    border:3px solid #0a0e18;
+    box-shadow:inset 0 0 0 3px #2c3a57, inset 0 0 0 6px #0a0e18, 0 14px 40px rgba(0,0,0,.6);
+  }
+  /* CRT scanline + vignette overlay → reads as a captured frame */
+  .screen::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:40;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,.10) 2px 3px);
+    box-shadow:inset 0 0 120px rgba(0,0,0,.55);
+  }
+  .cap{display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.06em}
+  .cap b{color:var(--gold);font-weight:400}
+
+  /* --- scenes --- */
+  .scene{position:absolute;inset:0;z-index:0}
+  .scene.dock{
+    background:
+      radial-gradient(120% 90% at 50% 135%, #244a78 0 22%, #16335a 22% 36%, transparent 36%),
+      linear-gradient(180deg,#06122a 0%, #0a1730 55%, #0e1d3a 100%);
+  }
+  .scene.dock .stars{position:absolute;inset:0}
+  .scene.interior{
+    background:
+      linear-gradient(180deg,#0c1426 0%,#0c1426 62%, #131d33 62%, #131d33 100%);
+  }
+  .scene.interior::before{ /* floor grid */
+    content:"";position:absolute;left:0;right:0;bottom:0;height:38%;
+    background-image:
+      linear-gradient(90deg,#22304d 2px,transparent 2px),
+      linear-gradient(#22304d 2px,transparent 2px);
+    background-size:48px 24px;opacity:.5;
+  }
+  .scene.starmap{
+    background:radial-gradient(140% 120% at 50% 40%, #0f1a39 0 40%, #080d1f 100%);
+  }
+  .scene.starmap::before{ /* map grid */
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(90deg,rgba(95,217,198,.07) 1px,transparent 1px),
+      linear-gradient(rgba(95,217,198,.07) 1px,transparent 1px);
+    background-size:40px 40px;
+  }
+  /* a distant planet sliver for dock scene */
+  .planet{position:absolute;border-radius:50%;z-index:1}
+  .planet.big{
+    width:46%;aspect-ratio:1;left:-12%;bottom:-26%;
+    background:radial-gradient(circle at 38% 32%, #6fae6a 0 28%, #4e8c52 28% 52%, #3a6e44 52% 74%, #2c5638 74%);
+    box-shadow:inset -10px -8px 0 rgba(0,0,0,.35), 0 0 50px rgba(111,174,106,.25);
+  }
+  .planet.moon{width:9%;aspect-ratio:1;right:14%;top:14%;
+    background:radial-gradient(circle at 40% 35%, #cdd6ea 0 40%, #97a3c2 40% 70%, #6b7796 70%);}
+  .station-sil{position:absolute;right:8%;top:30%;width:30%;height:46%;z-index:1;opacity:.55;
+    background:
+      linear-gradient(180deg,#1b2c4d,#0f1c36);
+    clip-path:polygon(0 40%,18% 40%,18% 12%,40% 12%,40% 0,60% 0,60% 12%,82% 12%,82% 40%,100% 40%,100% 70%,82% 70%,82% 100%,18% 100%,18% 70%,0 70%);
+    filter:drop-shadow(0 0 8px rgba(86,168,255,.2));
+  }
+
+  /* ============================================================
+     STARBOUND-STYLE WINDOW (pixel bevel panel)
+     ============================================================ */
+  .sbwin{
+    position:absolute;z-index:20;
+    background:var(--pn);
+    border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 2px var(--bevel-lt), inset 0 0 0 4px var(--pn-2), 0 8px 20px rgba(0,0,0,.5);
+    font-size:12px;
+  }
+  .sbwin .tbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:7px 10px;background:linear-gradient(180deg,#2e3c5a,#202b41);
+    border-bottom:2px solid var(--bevel-dk);
+    letter-spacing:.12em;font-size:11px;color:#bcccf0;text-transform:uppercase;
+  }
+  .sbwin .tbar .x{width:14px;height:14px;line-height:12px;text-align:center;
+    border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #4a5d85;background:#33405e;color:#8fa0c8;font-size:10px}
+  .sbwin .pad{padding:10px}
+
+  /* item slot */
+  .slot{
+    width:34px;height:34px;flex:0 0 34px;background:var(--pn-3);
+    border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #2b3850;
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .slot svg{width:22px;height:22px}
+  .slot .qty{position:absolute;right:1px;bottom:0;font-size:9px;color:#cfe;text-shadow:1px 1px 0 #000}
+
+  /* ---- merchant trade window ---- */
+  .merch{left:5%;top:9%;width:300px}
+  .merch .tabs{display:flex;gap:4px;margin-bottom:8px}
+  .merch .tab{flex:1;text-align:center;padding:5px;font-size:11px;letter-spacing:.1em;
+    background:var(--pn-3);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #2b3850;color:var(--dim)}
+  .merch .tab.on{background:#2a3a59;color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}
+  .mrow{display:flex;align-items:center;gap:9px;padding:5px;border:2px solid transparent}
+  .mrow .nm{flex:1;color:#dfe6f7}
+  .mrow .pr{display:flex;align-items:center;gap:4px;color:var(--gold)}
+  .mrow .pr svg{width:12px;height:12px}
+  .mrow.sel{border-color:var(--teal);background:rgba(95,217,198,.08);box-shadow:0 0 0 1px rgba(95,217,198,.2)}
+  .mrow .trend{font-size:10px;margin-left:6px}
+  .trend.u{color:var(--up)} .trend.d{color:var(--down)}
+  .merch .bal{display:flex;justify-content:space-between;align-items:center;margin-top:9px;
+    padding-top:8px;border-top:2px solid var(--bevel-dk);font-size:11px;color:var(--dim)}
+  .merch .bal b{color:var(--gold);font-weight:400;display:inline-flex;gap:4px;align-items:center}
+  .btn{margin-top:8px;text-align:center;padding:7px;letter-spacing:.16em;font-size:11px;color:#0b1018;
+    background:linear-gradient(180deg,#6fe6d3,#3bb7a4);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 1px #9ff3e6}
+
+  /* ---- SB2 dynamic-price tooltip popout ---- */
+  .pricepop{position:absolute;z-index:30;left:325px;top:34%;width:240px;
+    background:var(--pn-2);border:2px solid var(--teal);
+    box-shadow:inset 0 0 0 2px #0a0e18, 0 0 18px rgba(95,217,198,.25), 0 8px 22px rgba(0,0,0,.5)}
+  .pricepop::before{content:"";position:absolute;left:-9px;top:24px;width:0;height:0;
+    border:7px solid transparent;border-right-color:var(--teal)}
+  .pricepop .ph{padding:8px 10px;border-bottom:2px solid var(--bevel-dk);background:#16203a;
+    display:flex;justify-content:space-between;align-items:baseline}
+  .pricepop .ph .nm{color:#fff;font-size:12px}
+  .pricepop .ph .pr{color:var(--gold);font-size:15px}
+  .pricepop .ph .pr s{color:#56648a;font-size:11px;margin-right:5px}
+  .pricepop .pb{padding:9px 10px;display:grid;gap:7px}
+  .pricepop .reason{display:grid;grid-template-columns:46px 1fr;gap:8px;align-items:center;font-size:11px}
+  .pricepop .reason .d{text-align:right;font-weight:700}
+  .reason .d.u{color:var(--up)} .reason .d.d{color:var(--down)}
+  .pricepop .reason .lbl{color:#cdd7f0}
+  .pricepop .bar{grid-column:1/3;height:5px;background:#0e1626;border:1px solid #0a0e18;position:relative}
+  .pricepop .bar i{position:absolute;top:0;bottom:0;display:block;width:0;animation:fill .9s steps(8) .2s forwards}
+  .pricepop .bar i.u{left:50%;background:var(--up)}
+  .pricepop .bar i.d{right:50%;background:var(--down)}
+  @keyframes fill{to{width:var(--w)}}
+  .pricepop .src{padding:6px 10px;border-top:2px solid var(--bevel-dk);font-size:9px;color:#56648a;letter-spacing:.06em}
+
+  /* ---- breakdown panel ---- */
+  .bdwin{left:7%;top:7%;width:560px;max-width:86%}
+  .bdwin .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+  .chip{font-size:10px;letter-spacing:.06em;padding:4px 9px;color:var(--dim);
+    background:var(--pn-3);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #2b3850}
+  .chip.on{color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);background:#2a3a59}
+  table{width:100%;border-collapse:collapse;font-size:11px}
+  th{color:var(--dim);font-weight:400;text-align:right;padding:6px 7px;border-bottom:2px solid var(--bevel-dk);letter-spacing:.04em}
+  th:first-child,td:first-child{text-align:left}
+  td{text-align:right;padding:6px 7px;border-bottom:1px solid #0e1626;color:#cdd7f0}
+  td:first-child{color:#fff;display:flex;align-items:center;gap:7px}
+  td:first-child svg{width:16px;height:16px}
+  tr:last-child td{border-bottom:none}
+  .delta.u{color:var(--up)} .delta.d{color:var(--down)} .delta.f{color:var(--dim)}
+  .formula{margin-top:9px;padding-top:8px;border-top:2px solid var(--bevel-dk);font-size:10px;color:#56648a}
+
+  /* ---- faction status ---- */
+  .facwin{right:5%;top:9%;width:250px}
+  .facwin .row{display:flex;justify-content:space-between;margin:7px 0;font-size:11px}
+  .facwin .row .k{color:var(--dim)}
+  .meter{display:flex;gap:2px;margin-top:2px}
+  .meter i{width:7px;height:10px;background:#1b2740;border:1px solid #0a0e18}
+  .meter i.on{background:var(--apex)}
+  .meter.agro i.on{background:var(--up)}
+  .facwin .plan{margin-top:10px;padding-top:9px;border-top:2px solid var(--bevel-dk)}
+  .facwin .plan .k{color:var(--dim);font-size:10px;letter-spacing:.08em}
+  .facwin .plan .v{color:var(--apex);font-size:12px;margin-top:3px}
+  .facwin .plan .x{color:#56648a;font-size:10px}
+  /* influence spheres on map */
+  .sphere{position:absolute;border-radius:50%;z-index:5;mix-blend-mode:screen;
+    display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:.1em}
+  .sphere.apex{left:16%;top:24%;width:30%;aspect-ratio:1;background:radial-gradient(circle,rgba(198,120,221,.35),rgba(198,120,221,.05) 70%);color:#e9c4f4}
+  .sphere.floran{left:46%;top:46%;width:26%;aspect-ratio:1;background:radial-gradient(circle,rgba(123,216,106,.32),rgba(123,216,106,.04) 70%);color:#cdeec3}
+  .sphere.human{left:24%;top:54%;width:20%;aspect-ratio:1;background:radial-gradient(circle,rgba(86,168,255,.30),rgba(86,168,255,.04) 70%);color:#c3ddff}
+  .node{position:absolute;z-index:6;width:6px;height:6px;background:#fff;box-shadow:0 0 6px #fff}
+  .nodelbl{position:absolute;z-index:6;font-size:9px;color:#9fb0d6;letter-spacing:.06em}
+
+  /* ---- event log (emergent cascade) ---- */
+  .logwin{left:50%;top:8%;transform:translateX(-50%);width:540px;max-width:88%}
+  .logwin .pad{font-size:12px;line-height:1.9}
+  .logline{display:flex;gap:8px}
+  .logline .tick{color:#56648a;flex:0 0 54px;font-size:10px}
+  .logline .arr{color:#56648a}
+  .em-apex{color:var(--apex)} .em-up{color:var(--up)} .em-floran{color:var(--floran)} .em-gold{color:var(--gold)}
+  .logwin .foot{margin-top:10px;padding-top:9px;border-top:2px solid var(--bevel-dk);color:#56648a;font-size:10px}
+
+  /* ============================================================
+     HUD (over dock scene)
+     ============================================================ */
+  .hud{position:absolute;inset:0;z-index:25;pointer-events:none}
+  .vitals{position:absolute;left:14px;top:12px}
+  .vitals .vbar{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+  .vitals .vlab{width:12px;text-align:center;font-size:9px;color:#000;font-weight:700}
+  .vitals .seg{display:flex;gap:1px}
+  .vitals .seg i{width:10px;height:8px;background:#101827;border:1px solid #0a0e18}
+  .vitals .hp .vlab{background:var(--hp)} .vitals .en .vlab{background:var(--en)}
+  .vitals .hp i.on{background:var(--hp)} .vitals .en i.on{background:var(--en)}
+  .coords{position:absolute;right:14px;top:12px;text-align:right;font-size:11px;color:#aebbe0}
+  .coords .px{color:var(--gold);font-size:14px;display:inline-flex;align-items:center;gap:5px;justify-content:flex-end}
+  .coords .px svg{width:13px;height:13px}
+  .coords .loc{font-size:10px;color:#7a88ad;margin-top:2px;letter-spacing:.08em}
+  .hotbar{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:3px}
+  .hotbar .hs{width:32px;height:32px;background:rgba(20,27,41,.85);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 1px #2b3850;position:relative;display:flex;align-items:center;justify-content:center}
+  .hotbar .hs.on{box-shadow:inset 0 0 0 1px var(--teal);border-color:var(--teal)}
+  .hotbar .hs .n{position:absolute;left:1px;top:0;font-size:8px;color:#7a88ad}
+  .hotbar .hs svg{width:18px;height:18px}
+
+  /* a little NPC merchant terminal sprite in the dock scene */
+  .merchant-npc{position:absolute;z-index:10;right:30%;bottom:10%;width:42px;height:64px}
+
+  /* ============================================================
+     CODEX (pillars + roadmap) — kept, styled as in-game panels
+     ============================================================ */
+  .codex h2.big{font-size:22px;color:#fff;letter-spacing:.04em;margin:0 0 4px}
+  .codex .csub{color:var(--dim);font-size:13px;margin:0 0 22px}
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+  .pcard{background:var(--pn);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 2px var(--bevel-lt), inset 0 0 0 4px var(--pn-2);padding:18px;position:relative}
+  .pcard .top{height:3px;position:absolute;left:4px;right:4px;top:4px;background:var(--c,var(--teal))}
+  .pcard .ico{width:30px;height:30px;margin-bottom:8px}
+  .pcard h3{margin:0 0 6px;font-size:15px;color:#fff;letter-spacing:.03em}
+  .pcard p{margin:0 0 14px;color:var(--dim);font-size:12px;line-height:1.6}
+  .st{font-size:10px;letter-spacing:.06em;padding:4px 8px;border:2px solid var(--bevel-dk)}
+  .st.done{color:var(--down);box-shadow:inset 0 0 0 1px rgba(113,224,122,.4)}
+  .st.plan{color:var(--dim);box-shadow:inset 0 0 0 1px #2b3850}
+
+  .road{display:grid;gap:12px;margin-top:14px}
+  .mile{display:grid;grid-template-columns:96px 1fr;gap:18px;align-items:start;
+    background:var(--pn);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 2px var(--bevel-lt),inset 0 0 0 4px var(--pn-2);padding:16px 18px}
+  .mile.now{box-shadow:inset 0 0 0 2px var(--teal),inset 0 0 0 4px var(--pn-2),0 0 26px rgba(95,217,198,.12)}
+  .mile .ver{font-size:20px;font-weight:700;color:var(--human)}
+  .mile .nowt{display:inline-block;margin-top:6px;font-size:9px;letter-spacing:.12em;color:var(--teal);
+    border:2px solid var(--teal);padding:3px 6px}
+  .mile ul{margin:0;padding-left:16px}
+  .mile li{font-size:12px;margin:3px 0;color:#cdd7f0}
+  .mile li span{color:var(--dim);font-size:11px}
+
+  /* ===== combat arena ===== */
+  .scene.battle{background:
+    radial-gradient(120% 100% at 82% 18%, rgba(86,168,255,.12), transparent 55%),
+    radial-gradient(100% 100% at 12% 88%, rgba(255,106,94,.12), transparent 55%),
+    linear-gradient(180deg,#04060f,#080d1d)}
+  .pship{position:absolute;left:8%;top:46%;width:23%;z-index:8;filter:drop-shadow(0 0 10px rgba(95,217,198,.3))}
+  .eship{position:absolute;right:8%;top:24%;width:21%;z-index:8;filter:drop-shadow(0 0 10px rgba(255,106,94,.3))}
+  .shield{position:absolute;left:5%;top:40%;width:29%;aspect-ratio:1.7;border:2px solid rgba(95,217,198,.45);
+    border-radius:50%;z-index:7;box-shadow:inset 0 0 26px rgba(95,217,198,.18)}
+  .beam{position:absolute;left:30%;top:50%;width:46%;height:2px;z-index:9;transform:rotate(-12deg);transform-origin:left;
+    background:linear-gradient(90deg,rgba(95,217,198,0),#9ff3e6 35%,#fff);box-shadow:0 0 8px #5fd9c6}
+  .bolt{position:absolute;width:5px;height:5px;background:#ff8c42;box-shadow:0 0 6px #ff6a5e;z-index:9}
+  .tgt{right:5%;top:8%;width:228px}
+  .mod{margin:7px 0}
+  .mod .k{display:flex;justify-content:space-between;font-size:10px;color:#cdd7f0;margin-bottom:2px}
+  .mod .k .s{color:var(--dim)}
+  .hpbar{height:7px;background:#0e1626;border:1px solid #0a0e18;position:relative}
+  .hpbar i{display:block;height:100%}
+  .hpbar i.g{background:var(--down)} .hpbar i.y{background:var(--en)} .hpbar i.r{background:var(--up)}
+  .board{margin-top:10px;padding:8px;text-align:center;font-size:11px;letter-spacing:.1em;color:#0b1018;
+    background:linear-gradient(180deg,#6fe6d3,#3bb7a4);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 1px #9ff3e6;animation:pulse 1s steps(2) infinite}
+  @keyframes pulse{50%{filter:brightness(1.3)}}
+  .pstat{left:5%;bottom:8%;width:208px}
+  .pstat .k{display:flex;justify-content:space-between;font-size:10px;color:#cdd7f0;margin:6px 0 2px}
+  .pstat .k .s{color:var(--dim)}
+  .cool{display:flex;gap:3px;margin-top:4px}
+  .cool i{flex:1;height:6px;background:#0e1626;border:1px solid #0a0e18}
+  .cool i.rdy{background:var(--teal)}
+
+  /* ===== shipyard ===== */
+  .scene.bay{background:linear-gradient(180deg,#0a1120,#0d1426)}
+  .scene.bay::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(90deg,rgba(86,168,255,.06) 1px,transparent 1px),linear-gradient(rgba(86,168,255,.06) 1px,transparent 1px);
+    background-size:32px 32px}
+  .blueprint{position:absolute;left:6%;top:14%;width:55%;height:64%;z-index:6;border:2px dashed #2c3a57;background:rgba(12,20,38,.55)}
+  .bphull{position:absolute;left:8%;top:40%;width:84%;height:22%;background:#1c2944;border:2px solid #34466b}
+  .pslot{position:absolute;width:14%;aspect-ratio:1;border:2px solid var(--bevel-dk);background:var(--pn-3);
+    box-shadow:inset 0 0 0 1px #2b3850;display:flex;align-items:center;justify-content:center;z-index:7}
+  .pslot.empty{border-style:dashed;border-color:#3c4d70;background:transparent}
+  .pslot svg{width:58%;height:58%}
+  .pslot .tg{position:absolute;top:-13px;left:0;font-size:8px;color:var(--dim);letter-spacing:.05em}
+  .yardstat{right:5%;top:14%;width:198px}
+  .yardstat .k{display:flex;justify-content:space-between;font-size:11px;margin:5px 0;color:#cdd7f0}
+  .yardstat .k .s{color:var(--dim)} .yardstat .k b{color:var(--teal);font-weight:400}
+  .yardstat .warn{margin-top:9px;font-size:10px;color:var(--en);line-height:1.5}
+
+  /* ===== FU integration console ===== */
+  .scene.boot{background:linear-gradient(180deg,#060912,#0a0f1f)}
+  .console{left:6%;top:9%;width:520px;max-width:80%}
+  .console .pad{font-size:11px;line-height:1.85}
+  .cl{display:flex;gap:8px}
+  .cl .t{color:#56648a;flex:0 0 60px} .cl .ok{color:var(--down)} .cl .wr{color:var(--en)} .cl.d{color:#56648a}
+  .layer{right:6%;top:9%;width:186px}
+  .layer .lz{padding:9px;margin:7px 0;text-align:center;font-size:11px;border:2px solid var(--bevel-dk)}
+  .layer .lz.sb2{color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}
+  .layer .lz.fu{color:var(--floran);box-shadow:inset 0 0 0 1px rgba(123,216,106,.4)}
+  .layer .ar{text-align:center;color:#56648a;font-size:11px}
+
+  /* ===== concept gallery (10 new) ===== */
+  .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(218px,1fr));gap:14px;margin-top:18px}
+  .gc{background:var(--pn);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 2px var(--bevel-lt),inset 0 0 0 4px var(--pn-2);
+    padding:14px;display:flex;flex-direction:column}
+  .gc .mock{height:62px;background:var(--pn-3);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #2b3850;
+    margin-bottom:10px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .gc .num{position:absolute;left:4px;top:2px;font-size:10px;color:#56648a;z-index:2}
+  .gc h4{margin:0 0 5px;font-size:13px;color:#fff;letter-spacing:.02em}
+  .gc p{margin:0 0 11px;font-size:11px;color:var(--dim);line-height:1.55;flex:1}
+  .gc .meta{display:flex;gap:5px;flex-wrap:wrap}
+  .gc .b{font-size:9px;letter-spacing:.03em;padding:3px 6px;border:2px solid var(--bevel-dk)}
+  .gc .b.pil{color:var(--teal)} .gc .b.ver{color:var(--human)} .gc .b.who{color:var(--gold)}
+  .mk-chart{display:flex;align-items:flex-end;gap:2px;height:36px}
+  .mk-chart i{width:5px;background:var(--teal)}
+  .mk-heat{display:flex;gap:2px} .mk-heat i{width:8px;height:15px;background:#1b2740;border:1px solid #0a0e18}
+  .mk-heat i.on{background:var(--up)}
+  .mk-bars{width:76%;display:grid;gap:4px}
+  .mk-bars i{height:8px;border:1px solid #0a0e18}
+  .mk-rep i{width:8px;height:15px;border:1px solid #0a0e18;display:inline-block;background:#1b2740}
+  .mk-rep i.on{background:var(--apex)}
+
+  /* ============================================================ */
+  footer{padding:46px 0 70px;border-top:2px solid var(--bevel-dk);text-align:center;color:var(--dim);font-size:12px}
+  .disc{max-width:680px;margin:0 auto 18px;padding:13px 16px;font-size:12px;color:var(--dim);
+    background:var(--pn-2);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 2px #2c3a57}
+  footer code{color:var(--human)}
+
+  @media (max-width:680px){
+    .merch{width:62%;left:4%} .pricepop{left:auto;right:4%;top:50%;width:50%}
+    .pricepop::before{display:none}
+    .bdwin{width:92%;left:4%} .facwin{width:60%}
+    .merch .nm,.mrow .trend{font-size:10px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .stars,.scroll-cue{animation:none}
+    .pricepop .bar i{animation:none;width:var(--w)}
+  }
+
+  /* ===== mockup v2 additions ===== */
+  .ctab{overflow-x:auto;background:var(--pn);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 2px var(--bevel-lt),inset 0 0 0 4px var(--pn-2);padding:12px}
+  .ctab td:first-child{display:table-cell}
+  .ctab code,.csub code,footer code{color:var(--human);font-size:inherit}
+  .st.new{color:var(--gold);box-shadow:inset 0 0 0 1px rgba(255,211,92,.5)}
+  .st.prog{color:var(--en);box-shadow:inset 0 0 0 1px rgba(242,177,60,.5)}
+  .newb{font-size:9px;letter-spacing:.12em;color:#0b1018;background:var(--gold);padding:2px 6px;
+    border:2px solid var(--bevel-dk);margin-left:6px;vertical-align:middle;font-weight:400}
+  .gc.new{box-shadow:inset 0 0 0 2px var(--gold),inset 0 0 0 4px var(--pn-2)}
+  .win{left:5%;top:8%;width:560px;max-width:88%}
+  .win2{right:5%;top:8%;width:250px}
+  .kv{display:flex;justify-content:space-between;gap:10px;font-size:11px;margin:6px 0;color:#cdd7f0}
+  .kv .k{color:var(--dim);flex:0 0 auto} .kv b{font-weight:400;color:var(--teal);text-align:right}
+  .tag2{font-size:9px;padding:2px 6px;border:2px solid var(--bevel-dk);color:var(--dim);margin-left:6px;white-space:nowrap}
+  .chart{position:relative;height:120px;background:var(--pn-3);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #2b3850}
+  .chart svg{width:100%;height:100%;display:block}
+  .ann{position:absolute;font-size:9px;color:var(--gold);background:rgba(10,14,24,.88);border:1px solid var(--bevel-dk);padding:2px 5px;white-space:nowrap}
+  .heatgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px}
+  .heatgrid i{aspect-ratio:1;background:#1b2740;border:1px solid #0a0e18;display:block}
+  .heatgrid i.h1{background:#3a2f3a} .heatgrid i.h2{background:#7a3a3a} .heatgrid i.h3{background:#b8443f} .heatgrid i.h4{background:var(--up)}
+  .mk-bars i{width:100%}
+  .ctab th:nth-child(2),.ctab td:nth-child(2){text-align:left}
+  @media (max-width:680px){
+    .screen{aspect-ratio:auto;padding:12px;display:flex;flex-direction:column;gap:12px}
+    .sbwin.win,.sbwin.win2,.sbwin.console,.sbwin.layer{position:static!important;width:auto!important;max-width:none!important}
+    .scr-head{flex-wrap:wrap} .scr-head .pillar{margin-left:0;flex-basis:100%}
+  }
+</style>
+</head>
+<body>
+
+<header class="title">
+  <div class="stars"></div>
+  <div class="badge-row"><span class="tag">Frackin' Universe · Extension Mod · Mockup v2</span></div>
+  <h1>STARBOUND&nbsp;2.0</h1>
+  <div class="sub">P L A N N E D&nbsp;&nbsp;F E A T U R E S</div>
+  <p class="pitch">Full mockup všetkých plánovaných features: roadmap v0.1 → v2.0+, desať konceptov z prvého mockupu a štyri nové návrhy. Každá obrazovka je in-game okno tak, ako by ho hráč videl.</p>
+  <div class="scroll-cue">▼ &nbsp;FEATURE CODEX · OBRAZOVKY · ROADMAP&nbsp; ▼</div>
+  <div class="planet-shadow"></div>
+</header>
+
+<div class="wrap">
+
+  <!-- ===================== FEATURE CODEX ===================== -->
+  <section class="codex">
+    <h2 class="big">Feature Codex — všetko, čo je naplánované</h2>
+    <p class="csub">Jedna tabuľka, jeden zdroj: roadmap z <code>docs/vision.md</code>, koncepty z prvého mockupu a štyri nové návrhy. Stav podľa <code>docs/planned-features-analysis.md</code> (2026-09-25).</p>
+    <div class="ctab">
+    <table>
+      <tr><th>#</th><th>Feature</th><th>Pillar</th><th>Verzia</th><th>Stav</th><th>Závisí na</th><th>Obrazovka</th></tr>
+      <tr><td>R1</td><td>Dynamic Pricing System</td><td>Economy</td><td>v0.1</td><td><span class="st prog">DESIGN HOTOVÝ · KÓD ZAČATÝ</span></td><td>prototypy Q1/Q2/Q3</td><td>v1 · 01</td></tr>
+      <tr><td>R2</td><td>Breakdown terminál <code>sb2_market</code></td><td>Economy</td><td>v0.1</td><td><span class="st done">DESIGN HOTOVÝ</span></td><td>DPS storage</td><td>v1 · 02</td></tr>
+      <tr><td>R3</td><td>Trade flow scheduler (abstraktné konvoje)</td><td>Economy</td><td>v0.1</td><td><span class="st plan">SUB-DESIGN CHÝBA</span></td><td>DPS</td><td>08</td></tr>
+      <tr><td>R4</td><td>Rules-based frakčná AI (dummy)</td><td>Faction</td><td>v0.1</td><td><span class="st plan">DESIGN CHÝBA</span></td><td>influence-system.md</td><td>v1 · 03</td></tr>
+      <tr><td>R5</td><td>Galaxy Event Log</td><td>Emergent</td><td>v0.1</td><td><span class="st plan">KONCEPT</span></td><td>economy + faction eventy</td><td>v1 · 04</td></tr>
+      <tr><td>R6</td><td>FU compatibility layer (version check, tag drift)</td><td>FU-Native</td><td>v0.1</td><td><span class="st done">DESIGN HOTOVÝ</span></td><td>—</td><td>v1 · 07</td></tr>
+      <tr><td>R7</td><td>Migration framework + fixtures</td><td>Stability</td><td>v0.1</td><td><span class="st done">DESIGN HOTOVÝ</span></td><td>storage layer</td><td>09</td></tr>
+      <tr><td>R8</td><td>Utility AI vrstva + debug overlay</td><td>Faction</td><td>v0.5</td><td><span class="st plan">PLÁNOVANÉ</span></td><td>R4</td><td>10</td></tr>
+      <tr><td>R9</td><td><code>docs/MODDING.md</code> + example extension mod</td><td>Modding</td><td>v0.5</td><td><span class="st plan">PLÁNOVANÉ</span></td><td>zamrznutá schema v1</td><td>11</td></tr>
+      <tr><td>R10</td><td>Mapa vplyvu (vlastný canvas ScriptPane)</td><td>Faction</td><td>v0.5→v1.0</td><td><span class="st plan">KONCEPT</span></td><td>R4, R8</td><td>v1 · 03</td></tr>
+      <tr><td>R11</td><td>Modulárny vesmírny combat (mech framework)</td><td>Combat</td><td>v1.0</td><td><span class="st plan">PLÁNOVANÉ</span></td><td>design doc combat</td><td>v1 · 05</td></tr>
+      <tr><td>R12</td><td>Boarding (space encounter dungeon)</td><td>Combat</td><td>v1.0</td><td><span class="st plan">PLÁNOVANÉ</span></td><td>R11</td><td>v1 · 05</td></tr>
+      <tr><td>R13</td><td>Lodenica · modular loadout</td><td>Combat</td><td>v1.0</td><td><span class="st plan">KONCEPT</span></td><td>R11</td><td>v1 · 06</td></tr>
+      <tr><td>R14</td><td>Personality modifiers (Aggressor, Trader, …)</td><td>Faction</td><td>v1.0</td><td><span class="st plan">PLÁNOVANÉ</span></td><td>R8</td><td>10</td></tr>
+      <tr><td>R15</td><td>Public Lua hooks (<code>onPriceCalculated</code>, …)</td><td>Modding</td><td>v1.0</td><td><span class="st plan">PLÁNOVANÉ</span></td><td>R9</td><td>11</td></tr>
+      <tr><td>R16</td><td>Goals / agendas + inter-faction memory</td><td>Faction</td><td>v2.0+</td><td><span class="st plan">PLÁNOVANÉ</span></td><td>R14</td><td>12</td></tr>
+      <tr><td>01</td><td>Trade Route Planner</td><td>Economy</td><td>v0.5</td><td><span class="st plan">KONCEPT</span></td><td>R1, R3</td><td>13</td></tr>
+      <tr><td>02</td><td>Dynamic Contract Board</td><td>Emergent</td><td>v0.5</td><td><span class="st plan">KONCEPT</span></td><td>R4, R5</td><td>14</td></tr>
+      <tr><td>03</td><td>Player Trade Post</td><td>Economy</td><td>v1.0</td><td><span class="st plan">KONCEPT</span></td><td>universe state</td><td>15</td></tr>
+      <tr><td>04</td><td>Price History Ticker</td><td>Economy</td><td>v0.5</td><td><span class="st plan">KONCEPT</span></td><td>R1</td><td>16</td></tr>
+      <tr><td>05</td><td>Faction Standing &amp; Perks</td><td>Faction</td><td>v0.5</td><td><span class="st plan">KONCEPT</span></td><td>R4</td><td>17</td></tr>
+      <tr><td>06</td><td>Blockade Running</td><td>Economy×Combat</td><td>v1.0</td><td><span class="st plan">KONCEPT</span></td><td>R11</td><td>18</td></tr>
+      <tr><td>07</td><td>Regional Heat &amp; Pirate Threat</td><td>Faction×Combat</td><td>v0.5 / v1.0</td><td><span class="st plan">KONCEPT</span></td><td>R4 (číslo), R11 (entity)</td><td>19</td></tr>
+      <tr><td>08</td><td>NPC Base Raids</td><td>Faction×Emergent</td><td>po v1.0</td><td><span class="st plan">KONCEPT · SCOPE RIZIKO</span></td><td>R4, FU base</td><td>20</td></tr>
+      <tr><td>09</td><td>Crew Roster &amp; Officers</td><td>Combat</td><td>v1.0</td><td><span class="st plan">KONCEPT</span></td><td>R11, vanilla crew</td><td>21</td></tr>
+      <tr><td>10</td><td>Insurance &amp; Salvage Market</td><td>Economy</td><td>v1.0</td><td><span class="st plan">KONCEPT</span></td><td>R3, R11</td><td>22</td></tr>
+      <tr><td>11</td><td>Station Specialization Drift <span class="newb">NOVÉ</span></td><td>Economy</td><td>v0.5</td><td><span class="st new">NÁVRH</span></td><td>R1, R3</td><td>23</td></tr>
+      <tr><td>12</td><td>Tariffs &amp; Embargoes <span class="newb">NOVÉ</span></td><td>Faction×Economy</td><td>v0.5</td><td><span class="st new">NÁVRH</span></td><td>R1, R4, 05</td><td>24</td></tr>
+      <tr><td>13</td><td>Colony Demand (FU tenanti) <span class="newb">NOVÉ</span></td><td>Economy×FU-Native</td><td>v0.5→v1.0</td><td><span class="st new">NÁVRH</span></td><td>R1, 03</td><td>25</td></tr>
+      <tr><td>14</td><td>Letters of Marque <span class="newb">NOVÉ</span></td><td>Faction×Combat</td><td>v1.0</td><td><span class="st new">NÁVRH</span></td><td>R11, 05, 07</td><td>26</td></tr>
+    </table>
+    </div>
+    <p class="csub" style="margin-top:10px">„v1 · NN“ = obrazovka existuje v <code>prototypes/features-mockup.html</code>. Číslo bez prefixu = obrazovka nižšie na tejto stránke.</p>
+  </section>
+
+  <!-- ===================== 08 TRADE FLOW ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 08</span><h2>Konvoje — Trade Flow Scheduler</h2><span class="pillar">R3 · Living Economy · v0.1</span></div>
+    <div class="screen">
+      <div class="scene starmap"></div>
+      <div class="sbwin win"><div class="tbar"><span>SB2 Trade Flows · sektor α Centauri · day 145</span><span class="x">×</span></div>
+        <div class="pad">
+          <table>
+            <tr><th>Konvoj</th><th>Z</th><th>Do</th><th>Náklad</th><th>Odchod</th><th>Príchod</th><th>Magnitúda</th></tr>
+            <tr><td>convoy_0001</td><td>outpost_terramart_01</td><td>floran_market_03</td><td>water ×200, titan ×20</td><td>144</td><td>147</td><td class="delta u">+12%</td></tr>
+            <tr><td>convoy_0002</td><td>apex_refinery_02</td><td>outpost_terramart_01</td><td>refined ×60</td><td>145</td><td>149</td><td class="delta u">+8%</td></tr>
+            <tr><td>convoy_0003</td><td>fenrir_hub</td><td>sol_outpost</td><td>food ×340</td><td>146</td><td>148</td><td class="delta d">−10% @ zdroj</td></tr>
+          </table>
+          <div class="formula">konvoj = data record, nie entity · odchod: zdroj −magnitúda · príchod: cieľ +magnitúda · <code>docs/trade-flow-v01.md</code> (vznikne)</div>
+        </div>
+      </div>
+      <div class="sbwin win2"><div class="tbar"><span>Dnes v day ticku</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Konvoje v pohybe</span><b>3</b></div>
+          <div class="kv"><span class="k">Impulzy aplikované</span><b>2</b></div>
+          <div class="kv"><span class="k">Ďalší tick</span><b>18 min</b></div>
+          <div class="kv"><span class="k">Jitter seed</span><b>hash(seed, stanica, 145)</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Scheduler generuje záznamy, DPS ich konzumuje ako regionálny modifikátor</span><span>žiadne NPC lode v v0.1 · <b>iba dáta</b></span></div>
+  </section>
+
+  <!-- ===================== 09 MIGRATION ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 09</span><h2>Schema Migration — No Silent Failures</h2><span class="pillar">R7 · Stability · v0.1</span></div>
+    <div class="screen">
+      <div class="scene boot"></div>
+      <div class="sbwin console"><div class="tbar"><span>SB2 · Migration Log</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="cl"><span class="t">[load]</span><span>market_state outpost_terramart_01 · schema v1 · current v2</span></div>
+          <div class="cl"><span class="t">[backup]</span><span class="ok">✓ sb2_market_state_outpost_terramart_01_bak_v1 zapísaný</span></div>
+          <div class="cl"><span class="t">[migrate]</span><span class="ok">✓ migrate_v1_to_v2 · 30 items · migration_history +1</span></div>
+          <div class="cl"><span class="t">[verify]</span><span class="ok">✓ integrity OK · fixture mod/tests/fixtures/v1/terramart.json</span></div>
+          <div class="cl"><span class="t">[load]</span><span>economy_global · schema v3 · current v2</span></div>
+          <div class="cl"><span class="t">[abort]</span><span class="wr">✗ P0: state je z novšej verzie modu (v3 &gt; v2). Nenačítavam, backup nedotknutý.</span></div>
+          <div class="cl d"><span class="t">//</span><span>radšej crash s jasnou správou než tichá korupcia save-u</span></div>
+        </div>
+      </div>
+      <div class="sbwin layer"><div class="tbar"><span>Pravidlá</span><span class="x">×</span></div>
+        <div class="pad" style="font-size:11px;line-height:1.7;color:#cdd7f0">
+          schema_version v každom súbore<br>backup <b>pred</b> mutáciou<br>pure + idempotentné migrácie<br>fixture test per bump<br>retention 3 zálohy
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Sekcie 4.4 a 8 economy docu · test framework od dňa 1</span><span>spúšťa sa z <b>debug terminálu</b>, nie chat príkazom</span></div>
+  </section>
+
+  <!-- ===================== 10 UTILITY AI ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 10</span><h2>Frakčná AI — Utility Debug Overlay</h2><span class="pillar">R8 · R14 · Faction Influence · v0.5 → v1.0</span></div>
+    <div class="screen">
+      <div class="scene starmap"></div>
+      <div class="sbwin win"><div class="tbar"><span>Apex · rozhodovanie · day 145 · personality: AGGRESSOR</span><span class="x">×</span></div>
+        <div class="pad">
+          <table>
+            <tr><th>Akcia</th><th>base</th><th>ekonomika</th><th>susedia</th><th>personality</th><th>skóre</th></tr>
+            <tr><td>Blokáda α Centauri</td><td>0.40</td><td class="delta u">+0.25 hlad</td><td class="delta u">+0.10 Floran slabý</td><td class="delta u">×1.3</td><td><b style="color:var(--teal)">0.98</b></td></tr>
+            <tr><td>Obchodná dohoda Human</td><td>0.30</td><td class="delta u">+0.15</td><td class="delta d">−0.05</td><td class="delta d">×0.7</td><td>0.28</td></tr>
+            <tr><td>Držať pozície</td><td>0.20</td><td class="delta f">0</td><td class="delta f">0</td><td class="delta f">×1.0</td><td>0.20</td></tr>
+          </table>
+          <div class="formula">v0.1 rules-based (ak hlad &gt; prah → agresia +1) · v0.5 utility skóre · v1.0 personality váhy · vždy čitateľné, žiadne ML</div>
+        </div>
+      </div>
+      <div class="sbwin win2"><div class="tbar"><span>Vybrané</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Akcia</span><b>Blokáda</b></div>
+          <div class="kv"><span class="k">Cieľ</span><b>α Centauri</b></div>
+          <div class="kv"><span class="k">Trvanie</span><b>do day 158</b></div>
+          <div class="kv"><span class="k">Dôvod</span><b>hunger &gt; 0.6</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Hráč vidí stav, motiváciu a plánovanú akciu</span><span>Stellaris-štýl <b>transparent depth</b></span></div>
+  </section>
+
+  <!-- ===================== 11 MODDING ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 11</span><h2>Modding Platform — Example Extension + Lua Hooks</h2><span class="pillar">R9 · R15 · Modding · v0.5 → v1.0</span></div>
+    <div class="screen">
+      <div class="scene boot"></div>
+      <div class="sbwin console"><div class="tbar"><span>sb2_example_extension · _metadata + JSON</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="cl"><span class="t">[json]</span><span>factions/sb2_faction_novakid_traders.json · schema_version 1</span></div>
+          <div class="cl"><span class="t">[json]</span><span>commodities/sb2_commodity_erchius_crystal.json · category fuel</span></div>
+          <div class="cl"><span class="t">[json]</span><span>ship_modules/sb2_module_flak_battery.json · slot weapon</span></div>
+          <div class="cl"><span class="t">[hook]</span><span class="ok">✓ onPriceCalculated(item, price, reasons) → registrované (v1.0)</span></div>
+          <div class="cl"><span class="t">[hook]</span><span class="ok">✓ onFactionDecision(faction, action) → registrované (v1.0)</span></div>
+          <div class="cl"><span class="t">[hook]</span><span class="ok">✓ onShipModuleInstalled(ship, module) → registrované (v1.0)</span></div>
+          <div class="cl d"><span class="t">//</span><span>nová frakcia / komodita / modul bez forku core kódu · docs/MODDING.md</span></div>
+        </div>
+      </div>
+      <div class="sbwin layer"><div class="tbar"><span>Vrstvy</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="lz sb2">Extension mody</div><div class="ar">▲ JSON + hooks</div>
+          <div class="lz sb2">Starbound 2.0</div><div class="ar">▲ patche</div>
+          <div class="lz fu">Frackin' Universe</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Dáta v JSON, logika v Lua, schémy ako stabilný kontrakt</span><span>rovnaký vzťah ako <b>FU voči vanille</b></span></div>
+  </section>
+
+  <!-- ===================== 12 AGENDAS ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 12</span><h2>Agendy a pamäť frakcií</h2><span class="pillar">R16 · Faction Influence · v2.0+</span></div>
+    <div class="screen">
+      <div class="scene starmap"></div>
+      <div class="sbwin win"><div class="tbar"><span>Floran · agenda · day 212</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Dlhodobý cieľ</span><b>Ovládnuť trade hub Fenrir (3 kroky)</b></div>
+          <div class="mod"><div class="k"><span>Krok 1 · vplyv v sektore ≥ 50 %</span><span class="s">hotové</span></div><div class="hpbar"><i class="g" style="width:100%"></i></div></div>
+          <div class="mod"><div class="k"><span>Krok 2 · aliancia s Human</span><span class="s">62 %</span></div><div class="hpbar"><i class="y" style="width:62%"></i></div></div>
+          <div class="mod"><div class="k"><span>Krok 3 · blokáda Fenrir</span><span class="s">čaká</span></div><div class="hpbar"><i class="r" style="width:8%"></i></div></div>
+          <div class="formula">Pamäť: <span class="delta u">Apex zradil alianciu day 151</span> → dôvera Apex −40 % na 60 dní · hráč sabotoval konvoj day 190 → standing −15</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Frakcia sleduje cieľ naprieč dňami a pamätá si zradu</span><span>stále rules-based, <b>žiadne LLM</b></span></div>
+  </section>
+
+  <!-- ===================== 13 TRADE ROUTE PLANNER ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 13</span><h2>Trade Route Planner</h2><span class="pillar">01 · Living Economy · v0.5 · Trader</span></div>
+    <div class="screen">
+      <div class="scene starmap"></div>
+      <div class="sbwin win"><div class="tbar"><span>SB2 Route Planner · nová trasa</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Z</span><b>outpost_terramart_01 (α Centauri)</b></div>
+          <div class="kv"><span class="k">Do</span><b>floran_market_03 (Fenrir)</b></div>
+          <table>
+            <tr><th>Komodita</th><th>Kúpa</th><th>Predaj</th><th>Marža</th><th>Trend v cieli</th></tr>
+            <tr><td>Liquid Water</td><td>4</td><td>9</td><td class="delta u">+125%</td><td class="delta d">▼ konvoj_0001 dorazí day 147</td></tr>
+            <tr><td>Titanium Bar</td><td>16</td><td>19</td><td class="delta u">+19%</td><td class="delta f">stabilné</td></tr>
+            <tr><td>Core Fragment</td><td>64</td><td>41</td><td class="delta d">−36%</td><td class="delta u">▲ blokáda Apex</td></tr>
+          </table>
+          <div class="mod"><div class="k"><span>Riziko trasy (heat Fenrir)</span><span class="s">stredné · 34 %</span></div><div class="hpbar"><i class="y" style="width:34%"></i></div></div>
+          <div class="btn">REGISTROVAŤ TRASU</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Projekcia zisku iba z dát, ktoré hráč už vidí v termináloch</span><span>číta trh, <b>nehádá</b></span></div>
+  </section>
+
+  <!-- ===================== 14 CONTRACT BOARD ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 14</span><h2>Dynamic Contract Board</h2><span class="pillar">02 · Emergent · v0.5</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Kontrakty · Sol Outpost · day 149</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="mrow sel"><span class="nm">Zásob blokovaný systém α Centauri · 200× potraviny</span><span class="pr">3 400</span><span class="tag2">z: blokáda Apex</span></div>
+          <div class="mrow"><span class="nm">Eskortuj convoy_0003 Fenrir → Sol</span><span class="pr">1 200</span><span class="tag2">z: heat Fenrir 34 %</span></div>
+          <div class="mrow"><span class="nm">Vyčisti pirátsku základňu · Fenrir III</span><span class="pr">2 100</span><span class="tag2">z: piráti day 149</span></div>
+          <div class="formula">každý kontrakt má viditeľný zdroj v galaxy logu · šablóny, nie generátor · žiadny AI text</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Kontrakt = šablóna nad existujúcim eventom</span><span>hranica: <b>žiadne procedurálne questy</b></span></div>
+  </section>
+
+  <!-- ===================== 15 TRADE POST ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 15</span><h2>Player Trade Post</h2><span class="pillar">03 · Living Economy · v1.0 · Builder</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Tvoj obchodný post · „Pobis Station“ · market node</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Status</span><b>registrovaný v known_stations · day 160</b></div>
+          <div class="kv"><span class="k">Vplyv na región</span><b>−6 % refined_metal v sektore</b></div>
+          <div class="mod"><div class="k"><span>Denný obrat</span><span class="s">140 / 200 baseline</span></div><div class="hpbar"><i class="g" style="width:70%"></i></div></div>
+          <div class="mod"><div class="k"><span>Skladové zásoby · titanium</span><span class="s">1 240</span></div><div class="hpbar"><i class="y" style="width:55%"></i></div></div>
+          <div class="formula">NPC konvoje ťa zaradia do trás, keď máš ≥ 3 dni obratu · vizuálny progres = úroveň stanice</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Post je plnohodnotný uzol v DPS, nie dekorácia</span><span>blokované rozhodnutím o <b>universe state</b></span></div>
+  </section>
+
+  <!-- ===================== 16 PRICE HISTORY ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 16</span><h2>Price History Ticker</h2><span class="pillar">04 · Living Economy · v0.5 · Trader</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Core Fragment · outpost_terramart_01 · 14 dní</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="chart">
+            <svg viewBox="0 0 300 100" preserveAspectRatio="none">
+              <polyline fill="none" stroke="#5fd9c6" stroke-width="2" points="0,70 22,68 44,66 66,60 88,62 110,58 132,40 154,30 176,28 198,25 220,24 242,32 264,45 286,50"/>
+              <line x1="132" y1="0" x2="132" y2="100" stroke="#ff6a5e" stroke-dasharray="3 3"/>
+              <line x1="242" y1="0" x2="242" y2="100" stroke="#71e07a" stroke-dasharray="3 3"/>
+            </svg>
+            <span class="ann" style="left:44%;top:6px">day 145 · blokáda Apex +30%</span>
+            <span class="ann" style="left:70%;top:60px">day 150 · convoy_0002 −12%</span>
+          </div>
+          <div class="formula">história max 14 dní per item · limit kvôli veľkosti world property · anotácie = top_reasons z daného dňa</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Graf s dôvodmi, nie iba čiara</span><span>predvídaj <b>kaskády</b></span></div>
+  </section>
+
+  <!-- ===================== 17 STANDING ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 17</span><h2>Faction Standing &amp; Perks</h2><span class="pillar">05 · Faction Influence · v0.5 · Strategy</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Reputácia · všetky frakcie</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="mod"><div class="k"><span style="color:var(--apex)">Apex</span><span class="s">−35 · nepriateľ · +25 % ceny, zákaz doku</span></div><div class="hpbar"><i class="r" style="width:20%"></i></div></div>
+          <div class="mod"><div class="k"><span style="color:var(--floran)">Floran</span><span class="s">+62 · priateľ · −10 % ceny, prístup na Fenrir hub</span></div><div class="hpbar"><i class="g" style="width:81%"></i></div></div>
+          <div class="mod"><div class="k"><span style="color:var(--human)">Protectorate</span><span class="s">+8 · neutrál</span></div><div class="hpbar"><i class="y" style="width:54%"></i></div></div>
+          <div class="formula">reputácia z akcií (kontrakty, konvoje, sabotáž) · nie duplikát vanilla/FU reputácie, iba vrstva nad ňou</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Standing je ďalší čitateľný modifikátor ceny</span><span>nepriateľ <b>odmietne obchod</b></span></div>
+  </section>
+
+  <!-- ===================== 18 BLOCKADE RUNNING ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 18</span><h2>Blockade Running</h2><span class="pillar">06 · Economy × Combat · v1.0</span></div>
+    <div class="screen">
+      <div class="scene battle"></div>
+      <div class="sbwin win"><div class="tbar"><span>Prienik blokádou · α Centauri · Apex</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Náklad</span><b>340× potraviny (kontraband v Apex sfére)</b></div>
+          <div class="kv"><span class="k">Prémia v cieli</span><b class="delta u">+30 % blokáda + 18 % nedostatok</b></div>
+          <div class="mod"><div class="k"><span>Šanca interdikcie</span><span class="s">41 % · 2 hliadky · tvoj signature 0.8</span></div><div class="hpbar"><i class="r" style="width:41%"></i></div></div>
+          <div class="kv"><span class="k">Pri interdikcii</span><b>combat aréna alebo zaplatiť clo 2 800 px</b></div>
+          <div class="btn">SKOČIŤ DO SYSTÉMU</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Riziko je číslo, ktoré hráč vidí pred skokom</span><span>spája <b>ekonomiku a combat</b></span></div>
+  </section>
+
+  <!-- ===================== 19 HEAT ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 19</span><h2>Regional Heat &amp; Pirate Threat</h2><span class="pillar">07 · Faction × Combat · v0.5 (číslo) → v1.0 (entity)</span></div>
+    <div class="screen">
+      <div class="scene starmap"></div>
+      <div class="sbwin win2" style="left:5%;right:auto;width:300px"><div class="tbar"><span>Heat map · sektor</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="heatgrid">
+            <i></i><i class="h1"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i><i class="h3"></i>
+            <i></i><i></i><i class="h1"></i><i class="h2"></i><i class="h3"></i><i class="h2"></i>
+            <i></i><i></i><i></i><i class="h1"></i><i class="h1"></i><i class="h1"></i>
+          </div>
+          <div class="formula">heat rastie z blokád, vojen a nepotrestaných prepadov · klesá s hliadkami frakcie a časom</div>
+        </div>
+      </div>
+      <div class="sbwin win2"><div class="tbar"><span>Fenrir · heat 34 %</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Zdroje</span><b>blokáda +20, prepad +14</b></div>
+          <div class="kv"><span class="k">Riziko konvoja</span><b>×1.4</b></div>
+          <div class="kv"><span class="k">Poistenie</span><b>+22 % prémia</b></div>
+          <div class="kv"><span class="k">Piráti (v1.0)</span><b>2 spawny / 10 dní</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ v0.5 iba modifikátor, v1.0 reálne pirátske stretnutia</span><span>emergentné zo <b>systémov</b></span></div>
+  </section>
+
+  <!-- ===================== 20 BASE RAIDS ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 20</span><h2>NPC Base Raids</h2><span class="pillar">08 · Faction × Emergent · po v1.0 · scope riziko</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>⚠ Varovanie · Apex útočná skupina · tvoja základňa Fenrir III</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Dôvod</span><b>standing −35 + agresia vysoká + tvoj trade post −6 % ich cien</b></div>
+          <div class="kv"><span class="k">Príchod</span><b>day 163 (za 2 dni)</b></div>
+          <div class="kv"><span class="k">Sila</span><b>8 vojakov, 1 mech</b></div>
+          <div class="kv"><span class="k">Výsledok ovplyvní</span><b>vplyv Apex v sektore ±5 %, obrat postu</b></div>
+          <div class="formula">pozemný boj v existujúcom Starbound engine · obojsmerné (aj hráč raiduje) · odložené za v1.0 kvôli rozsahu</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Raid je dôsledok stavu, nie skript</span><span>najväčšie <b>scope riziko</b> zo všetkých konceptov</span></div>
+  </section>
+
+  <!-- ===================== 21 CREW ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 21</span><h2>Crew Roster &amp; Officers</h2><span class="pillar">09 · Tactical Combat · v1.0</span></div>
+    <div class="screen">
+      <div class="scene bay"></div>
+      <div class="sbwin win"><div class="tbar"><span>Posádka · Corvette</span><span class="x">×</span></div>
+        <div class="pad">
+          <table>
+            <tr><th>Meno</th><th>Rola</th><th>Modifikátor</th><th>Morálka</th></tr>
+            <tr><td>Kael (Floran)</td><td>Gunner</td><td class="delta u">−15 % reload</td><td>vysoká</td></tr>
+            <tr><td>Ora-7 (Glitch)</td><td>Engineer</td><td class="delta u">+20 % shield regen</td><td>stredná</td></tr>
+            <tr><td>Dane (Human)</td><td>Navigator</td><td class="delta u">−10 % interdikcia</td><td>vysoká</td></tr>
+          </table>
+          <div class="formula">rozšírenie vanilla crew systému · čísla, nie dialógy · morálka klesá pri prehratom boardingu</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Posádka = stat modifikátory lode</span><span>vanilla crew, <b>nie nový systém</b></span></div>
+  </section>
+
+  <!-- ===================== 22 INSURANCE ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 22</span><h2>Insurance &amp; Salvage Market</h2><span class="pillar">10 · Living Economy · v1.0 · Trader</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Poisťovňa · Sol Outpost</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Konvoj</span><b>tvoja trasa α Centauri → Fenrir</b></div>
+          <div class="kv"><span class="k">Hodnota nákladu</span><b>6 200 px</b></div>
+          <div class="kv"><span class="k">Prémia</span><b>8 % base + 22 % heat Fenrir = <span class="delta u">1 860 px</span></b></div>
+          <div class="kv"><span class="k">Krytie</span><b>80 % pri strate</b></div>
+          <div class="formula">salvage z vrakov po combat stretnutiach ide na trh ako nová komodita „wreck_parts“ · cena podľa DPS</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Uzatvára slučku riziko → strata → trh s troskami</span><span>potrebuje <b>reálne straty konvojov</b></span></div>
+  </section>
+
+  <!-- ===================== 23 NEW · SPECIALIZATION DRIFT ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 23</span><h2>Station Specialization Drift <span class="newb">NOVÉ</span></h2><span class="pillar">11 · Living Economy · v0.5</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>outpost_terramart_01 · profil stanice · day 160</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="mod"><div class="k"><span>Rafinéria (refined_metal)</span><span class="s">62 % · rastie · +3 %/deň z konvojov titánu</span></div><div class="hpbar"><i class="g" style="width:62%"></i></div></div>
+          <div class="mod"><div class="k"><span>Ťažba (ore)</span><span class="s">28 % · klesá</span></div><div class="hpbar"><i class="y" style="width:28%"></i></div></div>
+          <div class="mod"><div class="k"><span>Agro (food)</span><span class="s">10 %</span></div><div class="hpbar"><i class="r" style="width:10%"></i></div></div>
+          <div class="formula">špecializácia sa mení podľa reálneho toku tovaru cez stanicu (30-dňový vážený priemer) · pri ≥ 60 % vznikne bonus station_specialization ×1.2 · hráč ju môže cielene vybudovať</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Galaxia sa preskupuje podľa toho, kto čo kam vozí</span><span>emergentné, <b>iba dáta z DPS</b></span></div>
+  </section>
+
+  <!-- ===================== 24 NEW · TARIFFS ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 24</span><h2>Tariffs &amp; Embargoes <span class="newb">NOVÉ</span></h2><span class="pillar">12 · Faction × Economy · v0.5</span></div>
+    <div class="screen">
+      <div class="scene dock"><div class="stars"></div></div>
+      <div class="sbwin win"><div class="tbar"><span>Obchodná politika · Apex sféra · day 160</span><span class="x">×</span></div>
+        <div class="pad">
+          <table>
+            <tr><th>Tovar</th><th>Politika</th><th>Sadzba</th><th>Pre teba (standing −35)</th></tr>
+            <tr><td>Floran potraviny</td><td>embargo</td><td class="delta u">zákaz</td><td class="delta u">zákaz</td></tr>
+            <tr><td>Human refined_metal</td><td>clo</td><td class="delta u">+12 %</td><td class="delta u">+20 %</td></tr>
+            <tr><td>Apex advanced_component</td><td>export bonus</td><td class="delta d">−5 %</td><td class="delta f">0 %</td></tr>
+          </table>
+          <div class="formula">frakčná AI nastavuje clá ako akciu (utility) · v tooltipe ceny riadok „+12 % clo Apex“ · standing hráča sadzbu znižuje alebo zvyšuje · embargo = kontraband pre Blockade Running</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Politika frakcie je čitateľný cenový modifikátor</span><span>živí <b>Standing</b> aj <b>Blockade Running</b></span></div>
+  </section>
+
+  <!-- ===================== 25 NEW · COLONY DEMAND ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 25</span><h2>Colony Demand — FU tenanti <span class="newb">NOVÉ</span></h2><span class="pillar">13 · Economy × FU-Native · v0.5 → v1.0 · Builder</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Tvoja kolónia · Fenrir III · 6 tenantov</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Denná spotreba</span><b>potraviny 18 · medicína 3 · palivo 6</b></div>
+          <div class="mod"><div class="k"><span>Zásoby potravín</span><span class="s">4 dni · nedostatok o 4 dni</span></div><div class="hpbar"><i class="y" style="width:35%"></i></div></div>
+          <div class="mod"><div class="k"><span>Spokojnosť</span><span class="s">71 % · −5 %/deň bez potravín</span></div><div class="hpbar"><i class="g" style="width:71%"></i></div></div>
+          <div class="kv"><span class="k">Produkcia</span><b>ore 24/deň → predaj do DPS ako lokálna ponuka</b></div>
+          <div class="formula">tenanti z vanilla/FU kolónií = dopyt zdola · kolónia je mini market node · nespokojní tenanti odchádzajú (vanilla mechanika), spokojní platia viac nájmu</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Stavia na existujúcom FU/vanilla colony systéme</span><span>dôvod zásobovať <b>vlastnú planétu</b></span></div>
+  </section>
+
+  <!-- ===================== 26 NEW · LETTERS OF MARQUE ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 26</span><h2>Letters of Marque — privateering <span class="newb">NOVÉ</span></h2><span class="pillar">14 · Faction × Combat · v1.0</span></div>
+    <div class="screen">
+      <div class="scene battle"></div>
+      <div class="sbwin win"><div class="tbar"><span>Licencia · Floran · privateer proti Apex</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="kv"><span class="k">Platnosť</span><b>day 160 – 190 · zrušená pri mieri Floran/Apex</b></div>
+          <div class="kv"><span class="k">Povolené ciele</span><b>Apex konvoje v sektoroch Fenrir, α Centauri</b></div>
+          <div class="kv"><span class="k">Odmena</span><b>salvage + 15 % hodnoty nákladu od Floranov</b></div>
+          <div class="kv"><span class="k">Dôsledky</span><b class="delta u">standing Apex −10 / prepad · heat sektora +8 · vplyv Apex −1 %</b></div>
+          <div class="formula">legálne pirátstvo ako frakčný nástroj · hráč je súčasť vojny bez RTS flotíl · Apex reaguje hliadkami (utility AI)</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Prepad konvoja hýbe vplyvom, heatom a cenami naraz</span><span>jedna loď hráča, <b>žiadne flotily</b></span></div>
+  </section>
+
+  <!-- ===================== ROADMAP ===================== -->
+  <section class="codex">
+    <h2 class="big">Roadmap so stavom k 2026-09-25</h2>
+    <p class="csub">Verzia je dosiahnutá, až keď platí všetko v jej definícii. Koncepty a nové návrhy sú zaradené do verzie podľa závislostí.</p>
+    <div class="road">
+      <div class="mile now"><div><div class="ver">v0.1</div><span class="nowt">← TERAZ TU</span></div>
+        <ul>
+          <li>Dynamic Pricing System <span>· design hotový · sb2_prng.lua ✓ · sb2_economy_tags.config ✓ · storage layer čaká na Q1/Q2 · merchant hook čaká na Q3</span></li>
+          <li>Trade flow scheduler <span>· sub-design chýba</span></li>
+          <li>Rules-based frakčná AI <span>· docs/influence-system.md chýba</span></li>
+          <li>Galaxy Event Log, FU compatibility layer, migration framework</li>
+        </ul></div>
+      <div class="mile"><div><div class="ver">v0.5</div></div>
+        <ul>
+          <li>Utility AI + debug overlay, MODDING.md, example extension mod</li>
+          <li>Koncepty: 01 Trade Route Planner · 02 Contract Board · 04 Price History · 05 Standing · 07 Heat (číslo)</li>
+          <li>Nové: 11 Specialization Drift · 12 Tariffs &amp; Embargoes · 13 Colony Demand (prvá fáza)</li>
+        </ul></div>
+      <div class="mile"><div><div class="ver">v1.0</div></div>
+        <ul>
+          <li>Combat nad mech frameworkom + boarding, lodenica, personality modifiers, public Lua hooks</li>
+          <li>Koncepty: 03 Trade Post · 06 Blockade Running · 07 Heat (entity) · 09 Crew · 10 Insurance</li>
+          <li>Nové: 14 Letters of Marque · 13 Colony Demand (plná)</li>
+        </ul></div>
+      <div class="mile"><div><div class="ver">v2.0+</div></div>
+        <ul>
+          <li>Agendy, inter-faction memory, prípadne Steam Workshop</li>
+          <li>Koncept 08 NPC Base Raids <span>· iba ak scope dovolí</span></li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- ===================== NEW PROPOSALS GALLERY ===================== -->
+  <section class="codex">
+    <h2 class="big">Štyri nové návrhy — prečo práve tieto</h2>
+    <p class="csub">Vyberané tak, aby každý stál na dátach, ktoré DPS a influence systém už budú mať, a aby neporušili out of scope (žiadne LLM, PvP, RTS flotily, vlastný engine).</p>
+    <div class="gal">
+      <div class="gc new"><div class="mock"><span class="num">11</span><div class="mk-bars"><i style="background:#3bb7a4;width:62%"></i><i style="background:#2a3a59;width:28%"></i><i style="background:#243149;width:10%"></i></div></div>
+        <h4>Station Specialization Drift</h4><p>Stanice menia špecializáciu podľa reálneho toku tovaru. Hráč ju môže cielene vybudovať konvojmi. Nulový nový storage, iba 30-dňový priemer v market state.</p>
+        <div class="meta"><span class="b pil">Economy</span><span class="b ver">v0.5</span><span class="b who">Trader</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">12</span><div class="mk-heat"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <h4>Tariffs &amp; Embargoes</h4><p>Frakčná AI nastavuje clá a embargá ako utility akciu. Cena ukáže „+12 % clo Apex“. Embargo vytvára kontraband pre Blockade Running bez ďalšieho kódu.</p>
+        <div class="meta"><span class="b pil">Faction×Economy</span><span class="b ver">v0.5</span><span class="b who">Strategy</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">13</span><div class="mk-rep"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+        <h4>Colony Demand (FU tenanti)</h4><p>Tenanti z vanilla/FU kolónií generujú dopyt a spotrebu. Kolónia je mini market node. Jediný návrh, ktorý dáva builderovi dôvod zásobovať vlastnú planétu.</p>
+        <div class="meta"><span class="b pil">Economy×FU</span><span class="b ver">v0.5→v1.0</span><span class="b who">Builder</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">14</span><svg viewBox="0 0 60 30" shape-rendering="crispEdges" style="width:82%"><rect x="10" y="13" width="14" height="5" fill="#7bd86a"/><rect x="36" y="11" width="12" height="5" fill="#c678dd" opacity=".8"/><rect x="26" y="15" width="8" height="1" fill="#ffd35c"/></svg></div>
+        <h4>Letters of Marque</h4><p>Frakcia vydá privateer licenciu proti rivalovi. Prepad konvoja hýbe vplyvom, heatom a cenami naraz. Hráč je súčasť vojny s jednou loďou, bez flotíl.</p>
+        <div class="meta"><span class="b pil">Faction×Combat</span><span class="b ver">v1.0</span><span class="b who">všetci</span></div></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="disc">⚠️ Vizuálny statický mockup pre prezentáciu plánovaných features. Žiadny Lua / herný kód, nie je súčasťou implementácie. UI a čísla sú ilustračné. Obrazovky 01–07 (trading, breakdown, mapa vplyvu, galaxy log, combat, lodenica, FU console) sú v <code>features-mockup.html</code>.</div>
+  Zdroj pravdy: <code>docs/vision.md</code> · <code>docs/economy-system.md</code> · <code>docs/planned-features-analysis.md</code><br>
+  Starbound 2.0 · FU Extension Mod · Mockup v2 · 2026-09-25
+</footer>
+</body>
+</html>
