@@ -1,0 +1,9 @@
+{
+  "name" : "sb2_q3_merchant_price_test",
+  "friendlyName" : "SB2 Q3 Merchant Price Test",
+  "version" : "0.0.1",
+  "author" : "Starbound 2.0 prototyping",
+  "description" : "Disposable prototype mod: overuje ci merchant pane akceptuje per-item price override (Q3a), ci sa da cena skladat dynamicky v Lua pri otvoreni (Q3b) a ci sa daju dovody ceny dostat do tooltipu cez item description (Q3c). Vymazat po skonceni testovania.",
+  "includes" : [],
+  "priority" : 0
+}

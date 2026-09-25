@@ -1,0 +1,25 @@
+{
+  "objectName" : "sb2_test_shop_dynamic",
+  "colonyTags" : ["misc"],
+  "rarity" : "Common",
+  "category" : "decorative",
+  "price" : 0,
+  "printable" : false,
+  "description" : "SB2 Q3 prototype: merchant s cenami pocitanymi v Lua pri kazdom otvoreni. Delete after testing.",
+  "shortdescription" : "SB2 Test Shop (dynamic)",
+  "race" : "generic",
+  "objectType" : "object",
+  "health" : 1.0,
+  "interactive" : true,
+  "scripts" : ["/objects/sb2_test_shop_dynamic/sb2_test_shop_dynamic.lua"],
+  "scriptDelta" : 0,
+  "inventoryIcon" : "sb2_test_shop_dynamic.png",
+  "orientations" : [
+    {
+      "image" : "sb2_test_shop_dynamic.png",
+      "imagePosition" : [0, 0],
+      "spaceScan" : 0.1,
+      "anchors" : ["bottom"]
+    }
+  ]
+}

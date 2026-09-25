@@ -1,0 +1,44 @@
+{
+  "objectName" : "sb2_test_shop_static",
+  "colonyTags" : ["misc"],
+  "rarity" : "Common",
+  "category" : "decorative",
+  "price" : 0,
+  "printable" : false,
+  "description" : "SB2 Q3 prototype: staticky merchant s per-item price override. Delete after testing.",
+  "shortdescription" : "SB2 Test Shop (static)",
+  "race" : "generic",
+  "objectType" : "object",
+  "health" : 1.0,
+  "interactAction" : "OpenMerchantInterface",
+  "interactData" : {
+    "config" : "/interface/windowconfig/merchant.config",
+    "buyFactor" : 1.0,
+    "sellFactor" : 0.2,
+    "items" : [
+      { "item" : "liquidwater" },
+      { "item" : "liquidwater", "price" : 4 },
+      { "item" : "titaniumbar", "price" : 16 },
+      {
+        "item" : {
+          "name" : "corefragment",
+          "count" : 1,
+          "parameters" : {
+            "shortdescription" : "Core Fragment ^yellow;[64 px]^reset;",
+            "description" : "SB2 test tooltip:\n^orange;+30% Blokada Apexov^reset;\n^green;+20% Specializacia stanice (tazba)^reset;\n^red;-8% Hracsky tlak (predaj 24h)^reset;"
+          }
+        },
+        "price" : 64
+      }
+    ]
+  },
+  "inventoryIcon" : "sb2_test_shop_static.png",
+  "orientations" : [
+    {
+      "image" : "sb2_test_shop_static.png",
+      "imagePosition" : [0, 0],
+      "spaceScan" : 0.1,
+      "anchors" : ["bottom"]
+    }
+  ]
+}
