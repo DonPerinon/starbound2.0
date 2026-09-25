@@ -134,6 +134,25 @@ Vyberané tak, aby každý stál na dátach, ktoré DPS a influence systém už 
 
 Poznámka k prvému mockupu: obrazovky 01 až 07 ostávajú v `prototypes/features-mockup.html`. Nový mockup ich nekopíruje, iba na ne odkazuje vo Feature Codex tabuľke.
 
+### 5.2 Ďalších desať návrhov (2026-09-25, druhé kolo)
+
+Obrazovky 27 až 36 v `prototypes/planned-features-mockup.html`.
+
+| # | Feature | Pillar | Verzia | Prečo | Závisí na |
+|---|---|---|---|---|---|
+| 15 | Galactic Almanac | Economy | v0.5 | Predpoveď cien na 3 dni ako čistý výpočet z naplánovaných konvojov, eventov a decay formuly. Jitter sa nezahŕňa. Najčistejší prejav transparent depth. | DPS, trade flows |
+| 16 | Migration Flows | Emergent × Economy | v0.5 | Populácia stanice ako multiplikátor turnover baseline. Blokáda a vojna spúšťajú odliv, dopyt sa sťahuje na susedov, po mieri návrat. Stanica pod 50 % populácie stráca vplyv. | DPS, influence |
+| 17 | Diplomatic Envoy | Faction | v1.0 | Hráč nesie mierovú ponuku. Utility AI ju vyhodnotí a hráč vidí každý faktor aj to, čo by skóre posunulo cez prah. | utility AI, Standing (05) |
+| 18 | Station Siege & Relief | Faction × Economy | v0.5 → v1.0 | Blokáda dlhšia ako N dní sa stane obliehaním s timerom. Kapitulácia zmení sféru, relief run ju odloží. V0.5 čísla a kontrakty, v1.0 prienik cez combat. | influence, Contract Board (02), Blockade Running (06) |
+| 19 | Wanted Level & Bounty Hunters | Faction × Combat | v1.0 | Prepady dvíhajú hľadanosť u obete: zákaz doku, hliadky, bounty hunter encounter. Klesá časom alebo pokutou. Protiváha k Letters of Marque. | combat, Standing (05), Marque (14) |
+| 20 | Industrial Chains | Economy | v0.5 | Výrobné reťazce per typ stanice v JSON. Chýbajúci vstup znižuje lokálnu ponuku výstupu a cena nesie dôvod „chýba ore“. Vstup pre Specialization Drift. | DPS, Drift (11) |
+| 21 | Ship Wear & Dock Services | Combat × Economy | v1.0 | Moduly sa opotrebúvajú per skok a boj. Servis stojí DPS cenu materiálov na danej stanici, špecializovaná stanica je lacnejšia. Combat vracia dopyt do trhu. | combat, lodenica |
+| 22 | Market Intel Beacons | Economy × Strategy | v0.5 | Bez beaconu vidí hráč iba stav z poslednej návštevy, čo je presne to, čo engine vie (skripty bežia iba na načítaných svetoch). Beacon hlási stanicu pri day ticku. Technické obmedzenie premenené na mechaniku. | DPS, breakdown terminál |
+| 23 | Sector Chronicle | Emergent | v0.5 | Každý event nesie cause_id, kronika vykreslí strom dôsledkov až k akcii hráča. Šablónové vety, export do textu. Emergentný príbeh s dôkazom. | Galaxy Event Log |
+| 24 | Trading Company | Economy × Co-op | v1.0 | Spoločný ledger, trade post a trasy pre skupinku 2 až 8. Host drží stav, členovia vidia stav pri stretnutí na svete. Prvá feature pre štvrtú cieľovú skupinu. | Trade Post (03), Insurance (10) |
+
+Poradie, ak by sa mali vyberať iba tri do v0.5: 22 Intel Beacons (rieši reálny problém so zastaranými dátami), 15 Almanac (lacný, čistý výpočet nad existujúcim stavom), 23 Chronicle (jediný návrh, ktorý priamo napĺňa pillar Emergent Storytelling).
+
 ## 6. Nekonzistencie v repozitári
 
 - **`mod/_metadata` používa `includes` namiesto `requires`.** `includes` je mäkká závislosť (načítaj po FU, ak existuje). Vízia aj economy doc hovoria, že bez FU má mod padnúť pri načítaní. To robí `requires`. Priamy rozpor s pravidlom „no silent failures“.
@@ -158,4 +177,4 @@ Poznámka k prvému mockupu: obrazovky 01 až 07 ostávajú v `prototypes/featur
 
 - **Dátum**: 2026-09-25
 - **Analyzovaný commit**: `fca05f9` na `main`
-- **Typ**: jednorazová analýza; sekcia 5.1 a mockup v2 doplnené v ten istý deň
+- **Typ**: jednorazová analýza; sekcie 5.1, 5.2 a mockup v2 doplnené v ten istý deň

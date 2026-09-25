@@ -465,7 +465,7 @@
   <div class="badge-row"><span class="tag">Frackin' Universe · Extension Mod · Mockup v2</span></div>
   <h1>STARBOUND&nbsp;2.0</h1>
   <div class="sub">P L A N N E D&nbsp;&nbsp;F E A T U R E S</div>
-  <p class="pitch">Full mockup všetkých plánovaných features: roadmap v0.1 → v2.0+, desať konceptov z prvého mockupu a štyri nové návrhy. Každá obrazovka je in-game okno tak, ako by ho hráč videl.</p>
+  <p class="pitch">Full mockup všetkých plánovaných features: roadmap v0.1 → v2.0+, desať konceptov z prvého mockupu a štrnásť nových návrhov. Každá obrazovka je in-game okno tak, ako by ho hráč videl.</p>
   <div class="scroll-cue">▼ &nbsp;FEATURE CODEX · OBRAZOVKY · ROADMAP&nbsp; ▼</div>
   <div class="planet-shadow"></div>
 </header>
@@ -475,7 +475,7 @@
   <!-- ===================== FEATURE CODEX ===================== -->
   <section class="codex">
     <h2 class="big">Feature Codex — všetko, čo je naplánované</h2>
-    <p class="csub">Jedna tabuľka, jeden zdroj: roadmap z <code>docs/vision.md</code>, koncepty z prvého mockupu a štyri nové návrhy. Stav podľa <code>docs/planned-features-analysis.md</code> (2026-09-25).</p>
+    <p class="csub">Jedna tabuľka, jeden zdroj: roadmap z <code>docs/vision.md</code>, koncepty z prvého mockupu a štrnásť nových návrhov. Stav podľa <code>docs/planned-features-analysis.md</code> (2026-09-25).</p>
     <div class="ctab">
     <table>
       <tr><th>#</th><th>Feature</th><th>Pillar</th><th>Verzia</th><th>Stav</th><th>Závisí na</th><th>Obrazovka</th></tr>
@@ -509,6 +509,16 @@
       <tr><td>12</td><td>Tariffs &amp; Embargoes <span class="newb">NOVÉ</span></td><td>Faction×Economy</td><td>v0.5</td><td><span class="st new">NÁVRH</span></td><td>R1, R4, 05</td><td>24</td></tr>
       <tr><td>13</td><td>Colony Demand (FU tenanti) <span class="newb">NOVÉ</span></td><td>Economy×FU-Native</td><td>v0.5→v1.0</td><td><span class="st new">NÁVRH</span></td><td>R1, 03</td><td>25</td></tr>
       <tr><td>14</td><td>Letters of Marque <span class="newb">NOVÉ</span></td><td>Faction×Combat</td><td>v1.0</td><td><span class="st new">NÁVRH</span></td><td>R11, 05, 07</td><td>26</td></tr>
+      <tr><td>15</td><td>Galactic Almanac (cenová predpoveď) <span class="newb">NOVÉ</span></td><td>Economy</td><td>v0.5</td><td><span class="st new">NÁVRH</span></td><td>R1, R3</td><td>27</td></tr>
+      <tr><td>16</td><td>Migration Flows (utečenci a odliv) <span class="newb">NOVÉ</span></td><td>Emergent×Economy</td><td>v0.5</td><td><span class="st new">NÁVRH</span></td><td>R1, R4</td><td>28</td></tr>
+      <tr><td>17</td><td>Diplomatic Envoy (sprostredkovanie mieru) <span class="newb">NOVÉ</span></td><td>Faction</td><td>v1.0</td><td><span class="st new">NÁVRH</span></td><td>R8, 05</td><td>29</td></tr>
+      <tr><td>18</td><td>Station Siege &amp; Relief <span class="newb">NOVÉ</span></td><td>Faction×Economy</td><td>v0.5→v1.0</td><td><span class="st new">NÁVRH</span></td><td>R4, 02, 06</td><td>30</td></tr>
+      <tr><td>19</td><td>Wanted Level &amp; Bounty Hunters <span class="newb">NOVÉ</span></td><td>Faction×Combat</td><td>v1.0</td><td><span class="st new">NÁVRH</span></td><td>R11, 05, 14</td><td>31</td></tr>
+      <tr><td>20</td><td>Industrial Chains (výrobné reťazce staníc) <span class="newb">NOVÉ</span></td><td>Economy</td><td>v0.5</td><td><span class="st new">NÁVRH</span></td><td>R1, 11</td><td>32</td></tr>
+      <tr><td>21</td><td>Ship Wear &amp; Dock Services <span class="newb">NOVÉ</span></td><td>Combat×Economy</td><td>v1.0</td><td><span class="st new">NÁVRH</span></td><td>R11, R13</td><td>33</td></tr>
+      <tr><td>22</td><td>Market Intel Beacons <span class="newb">NOVÉ</span></td><td>Economy×Strategy</td><td>v0.5</td><td><span class="st new">NÁVRH</span></td><td>R1, R2</td><td>34</td></tr>
+      <tr><td>23</td><td>Sector Chronicle (strom dôsledkov) <span class="newb">NOVÉ</span></td><td>Emergent</td><td>v0.5</td><td><span class="st new">NÁVRH</span></td><td>R5</td><td>35</td></tr>
+      <tr><td>24</td><td>Trading Company (co-op ledger) <span class="newb">NOVÉ</span></td><td>Economy×Co-op</td><td>v1.0</td><td><span class="st new">NÁVRH</span></td><td>03, 10</td><td>36</td></tr>
     </table>
     </div>
     <p class="csub" style="margin-top:10px">„v1 · NN“ = obrazovka existuje v <code>prototypes/features-mockup.html</code>. Číslo bez prefixu = obrazovka nižšie na tejto stránke.</p>
@@ -912,6 +922,202 @@
     <div class="cap"><span>▸ Prepad konvoja hýbe vplyvom, heatom a cenami naraz</span><span>jedna loď hráča, <b>žiadne flotily</b></span></div>
   </section>
 
+
+  <!-- ===================== 27 NEW · ALMANAC ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 27</span><h2>Galactic Almanac — cenová predpoveď <span class="newb">NOVÉ</span></h2><span class="pillar">15 · Living Economy · v0.5 · Trader</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Almanach · outpost_terramart_01 · predpoveď 3 dni</span><span class="x">×</span></div>
+        <div class="pad">
+          <table>
+            <tr><th>Komodita</th><th>dnes</th><th>+1</th><th>+2</th><th>+3</th><th>Prečo</th></tr>
+            <tr><td>Liquid Water</td><td>4</td><td>4</td><td class="delta d">3</td><td class="delta d">3</td><td>convoy_0001 dorazí day 147</td></tr>
+            <tr><td>Core Fragment</td><td>64</td><td>64</td><td>63</td><td class="delta d">52</td><td>blokáda expiruje day 158? nie · decay 0.85</td></tr>
+            <tr><td>Refined Metal</td><td>18</td><td class="delta u">21</td><td class="delta u">22</td><td class="delta u">22</td><td>clo Apex +12 % od zajtra</td></tr>
+          </table>
+          <div class="formula">predpoveď = čistý výpočet z už naplánovaných konvojov, aktívnych eventov a decay formuly · žiadna náhoda, iba to, čo systém už vie · jitter nie je zahrnutý (±5 %)</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Ukáž hráčovi budúcnosť, ktorú systém už má naplánovanú</span><span>Factorio-štýl: <b>vidíš vzorec, predvídaš</b></span></div>
+  </section>
+
+  <!-- ===================== 28 NEW · MIGRATION ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 28</span><h2>Migration Flows — utečenci a odliv <span class="newb">NOVÉ</span></h2><span class="pillar">16 · Emergent × Economy · v0.5</span></div>
+    <div class="screen">
+      <div class="scene starmap"></div>
+      <div class="sbwin win"><div class="tbar"><span>Populácia sektora · day 152</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="mod"><div class="k"><span>α Centauri (blokáda 7 dní)</span><span class="s">populácia 100 % → 68 % · odliv −5 %/deň</span></div><div class="hpbar"><i class="r" style="width:68%"></i></div></div>
+          <div class="mod"><div class="k"><span>Sol Outpost (cieľ utečencov)</span><span class="s">100 % → 124 % · dopyt potravín +24 %</span></div><div class="hpbar"><i class="g" style="width:100%"></i></div></div>
+          <div class="mod"><div class="k"><span>Fenrir</span><span class="s">100 % → 108 %</span></div><div class="hpbar"><i class="y" style="width:90%"></i></div></div>
+          <div class="formula">populácia = multiplikátor daily_turnover_baseline · odliv pri blokáde/vojne, návrat po mieri (10 dní) · v cene sa zobrazí „+24 % utečenci“ · vplyv frakcie na stanici s populáciou &lt; 50 % klesá</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Blokáda má druhý dôsledok: ľudia odchádzajú a dopyt sa sťahuje</span><span>kaskáda <b>bez jediného skriptu</b></span></div>
+  </section>
+
+  <!-- ===================== 29 NEW · ENVOY ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 29</span><h2>Diplomatic Envoy — sprostredkovanie mieru <span class="newb">NOVÉ</span></h2><span class="pillar">17 · Faction Influence · v1.0 · Strategy</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Mierová ponuka · Floran → Apex · nesie hráč</span><span class="x">×</span></div>
+        <div class="pad">
+          <table>
+            <tr><th>Faktor v utility funkcii Apexu</th><th>váha</th><th>stav</th><th>príspevok</th></tr>
+            <tr><td>Straty z vojny (30 dní)</td><td>0.4</td><td>vysoké</td><td class="delta u">+0.32</td></tr>
+            <tr><td>Standing hráča u Apex</td><td>0.2</td><td>−35</td><td class="delta d">−0.14</td></tr>
+            <tr><td>Personality: Aggressor</td><td>×0.7</td><td>—</td><td class="delta d">×0.7</td></tr>
+            <tr><td>Ponúkané reparácie (200 refined)</td><td>0.3</td><td>áno</td><td class="delta u">+0.18</td></tr>
+          </table>
+          <div class="kv"><span class="k">Skóre prijatia</span><b>0.25 · prah 0.40 · <span class="delta u">chýba 0.15</span></b></div>
+          <div class="formula">hráč vidí, čo by ponuku posunulo: zvýšiť standing (+0.14) alebo pridať reparácie · rozhodnutie AI je čitateľné vopred, nie hod kockou</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Diplomacia ako viditeľná rovnica, nie dialóg</span><span>Stellaris <b>bez čiernej skrinky</b></span></div>
+  </section>
+
+  <!-- ===================== 30 NEW · SIEGE ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 30</span><h2>Station Siege &amp; Relief <span class="newb">NOVÉ</span></h2><span class="pillar">18 · Faction × Economy · v0.5 → v1.0</span></div>
+    <div class="screen">
+      <div class="scene dock"><div class="stars"></div></div>
+      <div class="sbwin win"><div class="tbar"><span>⚠ Obliehanie · outpost_terramart_01 · Apex · deň 9 z 14</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="mod"><div class="k"><span>Zásoby stanice (potraviny, palivo)</span><span class="s">31 % · −7 %/deň</span></div><div class="hpbar"><i class="r" style="width:31%"></i></div></div>
+          <div class="mod"><div class="k"><span>Odolnosť (Protectorate vplyv)</span><span class="s">5 dní do kapitulácie</span></div><div class="hpbar"><i class="y" style="width:36%"></i></div></div>
+          <div class="kv"><span class="k">Pri kapitulácii</span><b>stanica prejde do sféry Apex · vplyv Protectorate −15 % · clá Apex platia</b></div>
+          <div class="kv"><span class="k">Relief run</span><b>dodať ≥ 300 potravín = +4 dni · kontrakt 4 200 px na boarde</b></div>
+          <div class="formula">obliehanie = blokáda dlhšia ako N dní · v0.5 iba čísla a kontrakty · v1.0 prienik blokádou cez combat (06)</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Blokáda má koniec: stanica padne alebo ju hráč zachráni</span><span>mení <b>hranice sfér</b> bez skriptu</span></div>
+  </section>
+
+  <!-- ===================== 31 NEW · WANTED ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 31</span><h2>Wanted Level &amp; Bounty Hunters <span class="newb">NOVÉ</span></h2><span class="pillar">19 · Faction × Combat · v1.0</span></div>
+    <div class="screen">
+      <div class="scene battle"></div>
+      <div class="sbwin win"><div class="tbar"><span>Hľadaný · Apex · úroveň 3 z 5</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="mod"><div class="k"><span>Wanted</span><span class="s">3 prepady konvojov · posledný day 171</span></div><div class="hpbar"><i class="r" style="width:60%"></i></div></div>
+          <div class="kv"><span class="k">Dôsledky teraz</span><b>zákaz doku v Apex sfére · hliadky útočia · bounty hunter každých 6 dní</b></div>
+          <div class="kv"><span class="k">Odmena za teba</span><b>5 400 px · rastie s hodnotou ukoristeného</b></div>
+          <div class="kv"><span class="k">Ako klesá</span><b>−1 úroveň / 15 dní pokoja · pokuta 3 000 px · mier Floran/Apex nuluje marque prepady</b></div>
+          <div class="formula">dopĺňa Letters of Marque (14): legálne pre Floran, hľadaný u Apex · bounty hunter = space encounter s loďou podľa úrovne</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Pirátstvo má cenu, ktorú hráč vidí rásť</span><span>PvE lov, <b>žiadne PvP</b></span></div>
+  </section>
+
+  <!-- ===================== 32 NEW · INDUSTRIAL CHAINS ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 32</span><h2>Industrial Chains — výrobné reťazce staníc <span class="newb">NOVÉ</span></h2><span class="pillar">20 · Living Economy · v0.5</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>apex_refinery_02 · výroba · day 152</span><span class="x">×</span></div>
+        <div class="pad">
+          <table>
+            <tr><th>Reťazec</th><th>Vstup / deň</th><th>Výstup / deň</th><th>Účinnosť</th><th>Bottleneck</th></tr>
+            <tr><td>ore → refined_metal</td><td>ore 120 / 200</td><td>refined 36 / 60</td><td class="delta d">60 %</td><td class="delta u">ore: blokáda α Centauri</td></tr>
+            <tr><td>refined → advanced_component</td><td>refined 36 / 40</td><td>adv 9 / 10</td><td class="delta f">90 %</td><td>—</td></tr>
+            <tr><td>fuel (erchius) → energia</td><td>fuel 50 / 50</td><td>—</td><td class="delta f">100 %</td><td>—</td></tr>
+          </table>
+          <div class="formula">reťazce sú JSON dáta per typ stanice (data-driven) · nedostatok vstupu znižuje lokálnu ponuku výstupu → cena hore s dôvodom „−40 % výroba: chýba ore“ · hráč, ktorý dovezie ore, vidí efekt na ďalší deň</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Ceny majú príčinu aj o vrstvu hlbšie: výroba</span><span>vstup pre <b>Specialization Drift</b> (11)</span></div>
+  </section>
+
+  <!-- ===================== 33 NEW · SHIP WEAR ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 33</span><h2>Ship Wear &amp; Dock Services <span class="newb">NOVÉ</span></h2><span class="pillar">21 · Combat × Economy · v1.0</span></div>
+    <div class="screen">
+      <div class="scene bay"></div>
+      <div class="sbwin win"><div class="tbar"><span>Dok · Fenrir hub · servis lode Corvette</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="mod"><div class="k"><span>Motor · opotrebenie</span><span class="s">62 % · −2 %/skok</span></div><div class="hpbar"><i class="y" style="width:62%"></i></div></div>
+          <div class="mod"><div class="k"><span>Štítový modul</span><span class="s">18 % · poškodený v boji day 171</span></div><div class="hpbar"><i class="r" style="width:18%"></i></div></div>
+          <div class="kv"><span class="k">Oprava štítov</span><b>40× refined_metal · tu 19 px/ks = 760 px <span class="delta d">(rafinéria −15 %)</span></b></div>
+          <div class="kv"><span class="k">Oprava motora</span><b>12× advanced_component · tu nedostupné · najbližšie apex_refinery_02</b></div>
+          <div class="formula">opotrebenie per skok a per boj · cena servisu = DPS cena materiálov na danej stanici · špecializovaná stanica opravuje lacnejšie a rýchlejšie</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Combat vracia dopyt späť do ekonomiky</span><span>loď je <b>zákazník trhu</b></span></div>
+  </section>
+
+  <!-- ===================== 34 NEW · INTEL BEACONS ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 34</span><h2>Market Intel Beacons <span class="newb">NOVÉ</span></h2><span class="pillar">22 · Economy × Strategy · v0.5</span></div>
+    <div class="screen">
+      <div class="scene starmap"></div>
+      <div class="sbwin win"><div class="tbar"><span>Intel sieť · 4 beacony · day 152</span><span class="x">×</span></div>
+        <div class="pad">
+          <table>
+            <tr><th>Stanica</th><th>Zdroj dát</th><th>Čerstvosť</th><th>Core Fragment</th><th>Heat</th></tr>
+            <tr><td>outpost_terramart_01</td><td class="delta f">beacon</td><td class="delta f">dnes</td><td>64</td><td>12 %</td></tr>
+            <tr><td>fenrir_hub</td><td class="delta f">beacon</td><td class="delta f">dnes</td><td>41</td><td>34 %</td></tr>
+            <tr><td>sol_outpost</td><td>posledná návšteva</td><td class="delta u">9 dní · zastarané</td><td>38?</td><td>?</td></tr>
+            <tr><td>apex_refinery_02</td><td>—</td><td class="delta u">nikdy</td><td>—</td><td>—</td></tr>
+          </table>
+          <div class="formula">bez beaconu vidí hráč iba stav z poslednej návštevy (presne to, čo engine reálne vie) · beacon = placeable objekt, ktorý pri day ticku hlási stav stanice · mechanika z technického obmedzenia</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Čerstvosť informácie je herná mena</span><span>obmedzenie enginu <b>ako feature</b></span></div>
+  </section>
+
+  <!-- ===================== 35 NEW · CHRONICLE ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 35</span><h2>Sector Chronicle — strom dôsledkov <span class="newb">NOVÉ</span></h2><span class="pillar">23 · Emergent Storytelling · v0.5</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Kronika · tvoje stopy · day 140–152</span><span class="x">×</span></div>
+        <div class="pad" style="font-size:11px;line-height:1.9;color:#cdd7f0">
+          <div><span style="color:var(--gold)">day 141</span> Predal si 500× potravín na Sol Outpost <span class="delta d">−50 % hráčsky tlak</span></div>
+          <div style="padding-left:18px">↳ <span style="color:var(--gold)">day 143</span> Floran konvoj_0004 zmenil cieľ na α Centauri (Sol nasýtený)</div>
+          <div style="padding-left:36px">↳ <span style="color:var(--gold)">day 145</span> Apex vyhlásil blokádu α Centauri (utility: hlad + Floran prítomnosť)</div>
+          <div style="padding-left:54px">↳ <span style="color:var(--gold)">day 149</span> Piráti napadli Fenrir (heat 34 %)</div>
+          <div style="padding-left:72px">↳ <span style="color:var(--gold)">day 151</span> Floran vyhlásil vojnu <span class="delta u">← tvoja stopa: 4 kroky</span></div>
+          <div class="formula">každý event nesie odkaz na príčinu (cause_id) · kronika iba vykreslí strom · šablónové vety, žiadny generovaný text · export do textového súboru per save</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Hráč vidí, že vojnu spustil jeho predaj potravín</span><span>emergentný príbeh <b>s dôkazom</b></span></div>
+  </section>
+
+  <!-- ===================== 36 NEW · TRADING COMPANY ===================== -->
+  <section>
+    <div class="scr-head"><span class="lbl">Screen 36</span><h2>Trading Company — co-op ledger <span class="newb">NOVÉ</span></h2><span class="pillar">24 · Economy × Co-op · v1.0 · Co-op skupinka</span></div>
+    <div class="screen">
+      <div class="scene interior"></div>
+      <div class="sbwin win"><div class="tbar"><span>Spoločnosť „Fenrir Freight“ · 3 členovia · day 152</span><span class="x">×</span></div>
+        <div class="pad">
+          <table>
+            <tr><th>Člen</th><th>Vklad</th><th>Zisk z trás (7 dní)</th><th>Podiel</th></tr>
+            <tr><td>Rasto (host)</td><td>10 000</td><td class="delta u">+3 200</td><td>50 %</td></tr>
+            <tr><td>Mišo</td><td>6 000</td><td class="delta u">+1 920</td><td>30 %</td></tr>
+            <tr><td>Peťo</td><td>4 000</td><td class="delta u">+1 280</td><td>20 %</td></tr>
+          </table>
+          <div class="kv"><span class="k">Spoločný majetok</span><b>trade post Pobis Station · 2 registrované trasy · poistka konvojov</b></div>
+          <div class="kv"><span class="k">Sync</span><b>ledger drží host (player property) · členovia vidia stav pri stretnutí na svete, max 30 s staré</b></div>
+          <div class="formula">trust-based skupinka, žiadny anti-cheat · standing a wanted ostávajú per hráč · rozpad spoločnosti = rozdelenie podľa podielov</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Prvá feature pre štvrtú cieľovú skupinu</span><span>eventual consistency <b>je v poriadku</b></span></div>
+  </section>
+
   <!-- ===================== ROADMAP ===================== -->
   <section class="codex">
     <h2 class="big">Roadmap so stavom k 2026-09-25</h2>
@@ -928,13 +1134,13 @@
         <ul>
           <li>Utility AI + debug overlay, MODDING.md, example extension mod</li>
           <li>Koncepty: 01 Trade Route Planner · 02 Contract Board · 04 Price History · 05 Standing · 07 Heat (číslo)</li>
-          <li>Nové: 11 Specialization Drift · 12 Tariffs &amp; Embargoes · 13 Colony Demand (prvá fáza)</li>
+          <li>Nové: 11 Specialization Drift · 12 Tariffs &amp; Embargoes · 13 Colony Demand (prvá fáza) · 15 Almanac · 16 Migration · 18 Siege (čísla) · 20 Industrial Chains · 22 Intel Beacons · 23 Chronicle</li>
         </ul></div>
       <div class="mile"><div><div class="ver">v1.0</div></div>
         <ul>
           <li>Combat nad mech frameworkom + boarding, lodenica, personality modifiers, public Lua hooks</li>
           <li>Koncepty: 03 Trade Post · 06 Blockade Running · 07 Heat (entity) · 09 Crew · 10 Insurance</li>
-          <li>Nové: 14 Letters of Marque · 13 Colony Demand (plná)</li>
+          <li>Nové: 14 Letters of Marque · 13 Colony Demand (plná) · 17 Envoy · 18 Siege (combat) · 19 Wanted · 21 Ship Wear · 24 Trading Company</li>
         </ul></div>
       <div class="mile"><div><div class="ver">v2.0+</div></div>
         <ul>
@@ -946,7 +1152,7 @@
 
   <!-- ===================== NEW PROPOSALS GALLERY ===================== -->
   <section class="codex">
-    <h2 class="big">Štyri nové návrhy — prečo práve tieto</h2>
+    <h2 class="big">Štrnásť nových návrhov — prečo práve tieto</h2>
     <p class="csub">Vyberané tak, aby každý stál na dátach, ktoré DPS a influence systém už budú mať, a aby neporušili out of scope (žiadne LLM, PvP, RTS flotily, vlastný engine).</p>
     <div class="gal">
       <div class="gc new"><div class="mock"><span class="num">11</span><div class="mk-bars"><i style="background:#3bb7a4;width:62%"></i><i style="background:#2a3a59;width:28%"></i><i style="background:#243149;width:10%"></i></div></div>
@@ -961,6 +1167,36 @@
       <div class="gc new"><div class="mock"><span class="num">14</span><svg viewBox="0 0 60 30" shape-rendering="crispEdges" style="width:82%"><rect x="10" y="13" width="14" height="5" fill="#7bd86a"/><rect x="36" y="11" width="12" height="5" fill="#c678dd" opacity=".8"/><rect x="26" y="15" width="8" height="1" fill="#ffd35c"/></svg></div>
         <h4>Letters of Marque</h4><p>Frakcia vydá privateer licenciu proti rivalovi. Prepad konvoja hýbe vplyvom, heatom a cenami naraz. Hráč je súčasť vojny s jednou loďou, bez flotíl.</p>
         <div class="meta"><span class="b pil">Faction×Combat</span><span class="b ver">v1.0</span><span class="b who">všetci</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">15</span><div class="mk-chart"><i style="height:40%"></i><i style="height:42%"></i><i style="height:38%"></i><i style="height:60%;background:#ffd35c"></i><i style="height:64%;background:#ffd35c"></i><i style="height:52%;background:#ffd35c"></i></div></div>
+        <h4>Galactic Almanac</h4><p>Predpoveď cien na 3 dni z už naplánovaných konvojov a eventov. Žiadna náhoda, iba to, čo systém už vie.</p>
+        <div class="meta"><span class="b pil">Economy</span><span class="b ver">v0.5</span><span class="b who">Trader</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">16</span><svg viewBox="0 0 60 30" shape-rendering="crispEdges" style="width:80%"><rect x="6" y="12" width="10" height="8" fill="#ff6a5e" opacity=".6"/><rect x="44" y="10" width="10" height="10" fill="#71e07a" opacity=".7"/><rect x="18" y="15" width="24" height="1" fill="#8a97ba"/><rect x="40" y="13" width="2" height="5" fill="#8a97ba"/></svg></div>
+        <h4>Migration Flows</h4><p>Blokáda vyháňa populáciu, dopyt sa sťahuje na susedné stanice. Populácia je multiplikátor turnover baseline.</p>
+        <div class="meta"><span class="b pil">Emergent×Economy</span><span class="b ver">v0.5</span><span class="b who">všetci</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">17</span><div class="mk-rep"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <h4>Diplomatic Envoy</h4><p>Hráč nesie mierovú ponuku. AI ju vyhodnotí utility funkciou a hráč vidí skóre aj to, čo by ho zvýšilo.</p>
+        <div class="meta"><span class="b pil">Faction</span><span class="b ver">v1.0</span><span class="b who">Strategy</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">18</span><div class="mk-heat"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+        <h4>Station Siege &amp; Relief</h4><p>Dlhá blokáda má koniec: stanica kapituluje a zmení sféru, alebo ju relief run zachráni. Hranice sa hýbu bez skriptu.</p>
+        <div class="meta"><span class="b pil">Faction×Economy</span><span class="b ver">v0.5→v1.0</span><span class="b who">všetci</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">19</span><svg viewBox="0 0 24 24" shape-rendering="crispEdges" style="width:40%"><rect x="4" y="4" width="16" height="16" fill="none" stroke="#ff6a5e" stroke-width="2"/><rect x="11" y="2" width="2" height="20" fill="#ff6a5e"/><rect x="2" y="11" width="20" height="2" fill="#ff6a5e"/></svg></div>
+        <h4>Wanted Level &amp; Bounty Hunters</h4><p>Prepady majú cenu: úroveň hľadanosti, hliadky, lovci odmien. Klesá časom alebo pokutou. Dopĺňa Letters of Marque.</p>
+        <div class="meta"><span class="b pil">Faction×Combat</span><span class="b ver">v1.0</span><span class="b who">všetci</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">20</span><div class="mk-bars"><i style="background:#3bb7a4;width:60%"></i><i style="background:#3bb7a4;width:90%"></i><i style="background:#3bb7a4;width:100%"></i></div></div>
+        <h4>Industrial Chains</h4><p>Stanice majú JSON výrobné reťazce (ore → refined → advanced). Chýbajúci vstup znižuje výstup a cena ukáže „chýba ore“.</p>
+        <div class="meta"><span class="b pil">Economy</span><span class="b ver">v0.5</span><span class="b who">Trader</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">21</span><div class="mk-bars"><i style="background:#f2b13c;width:62%"></i><i style="background:#e2484d;width:18%"></i><i style="background:#71e07a;width:90%"></i></div></div>
+        <h4>Ship Wear &amp; Dock Services</h4><p>Moduly sa opotrebúvajú per skok a boj. Servis stojí DPS cenu materiálov na danej stanici. Combat vracia dopyt do trhu.</p>
+        <div class="meta"><span class="b pil">Combat×Economy</span><span class="b ver">v1.0</span><span class="b who">všetci</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">22</span><svg viewBox="0 0 60 30" shape-rendering="crispEdges" style="width:80%"><rect x="28" y="6" width="4" height="18" fill="#5fd9c6"/><rect x="26" y="4" width="8" height="2" fill="#9ff3e6"/><rect x="14" y="14" width="10" height="1" fill="#5fd9c6" opacity=".5"/><rect x="36" y="14" width="10" height="1" fill="#5fd9c6" opacity=".5"/></svg></div>
+        <h4>Market Intel Beacons</h4><p>Bez beaconu vidíš iba stav z poslednej návštevy. Beacon hlási stanicu pri day ticku. Obmedzenie enginu ako mechanika.</p>
+        <div class="meta"><span class="b pil">Economy×Strategy</span><span class="b ver">v0.5</span><span class="b who">Strategy</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">23</span><svg viewBox="0 0 60 30" shape-rendering="crispEdges" style="width:80%"><rect x="6" y="6" width="6" height="3" fill="#ffd35c"/><rect x="14" y="12" width="6" height="3" fill="#ffd35c"/><rect x="22" y="18" width="6" height="3" fill="#ffd35c"/><rect x="30" y="24" width="6" height="3" fill="#ff6a5e"/><rect x="9" y="9" width="1" height="3" fill="#8a97ba"/><rect x="17" y="15" width="1" height="3" fill="#8a97ba"/><rect x="25" y="21" width="1" height="3" fill="#8a97ba"/></svg></div>
+        <h4>Sector Chronicle</h4><p>Každý event nesie cause_id. Kronika vykreslí strom dôsledkov až k tvojej akcii. Emergentný príbeh s dôkazom.</p>
+        <div class="meta"><span class="b pil">Emergent</span><span class="b ver">v0.5</span><span class="b who">všetci</span></div></div>
+      <div class="gc new"><div class="mock"><span class="num">24</span><div class="mk-rep"><i class="on" style="background:#56a8ff"></i><i class="on" style="background:#56a8ff"></i><i class="on" style="background:#56a8ff"></i><i class="on" style="background:#56a8ff"></i><i class="on" style="background:#56a8ff"></i><i class="on" style="background:#7bd86a"></i><i class="on" style="background:#7bd86a"></i><i class="on" style="background:#7bd86a"></i></div></div>
+        <h4>Trading Company (co-op)</h4><p>Spoločný ledger, trade post a trasy pre 2 až 8 kamarátov. Host drží stav, členovia ho vidia s max 30 s oneskorením.</p>
+        <div class="meta"><span class="b pil">Economy×Co-op</span><span class="b ver">v1.0</span><span class="b who">Co-op</span></div></div>
     </div>
   </section>
 
