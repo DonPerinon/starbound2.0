@@ -4,6 +4,6 @@
   "description": "Living economy, faction influence, and space combat extension for Frackin' Universe",
   "author": "Tvoje meno",
   "version": "0.0.1",
-  "includes": ["FrackinUniverse"],
+  "requires": ["FrackinUniverse"],
   "priority": 9999
 }

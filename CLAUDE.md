@@ -108,13 +108,14 @@ Každý netriviálny systém má design doc v `docs/` skôr ako vznikne Lua kód
 - Vanilla Starbound bez FU (FU je tvrdá závislosť)
 
 ## Aktuálny stav projektu
-- **Fáza**: Setup (pred-implementácia)
-- **Aktívny systém**: Žiadny
-- **Najbližší míľnik**: Design doc pre Dynamic Pricing System (`docs/economy-system.md`)
+- **Fáza**: Pred-implementácia, prototypovanie storage vrstvy
+- **Aktívny systém**: Dynamic Pricing System (v0.1)
+- **Najbližší míľnik**: výsledky prototypu Q1/Q2 (`prototypes/q1_q2_storage_test/`) zapísané do `docs/economy-system.md` sekcia 10, potom storage layer
+- **Analýza stavu**: `docs/planned-features-analysis.md` (2026-09-25)
 
 ## Kľúčové dokumenty
 - `docs/vision.md` – celková vízia projektu (zdroj pravdy)
-- `docs/economy-system.md` – design ekonomického systému (chýba)
+- `docs/economy-system.md` – design ekonomického systému (v1 draft)
 - `docs/influence-system.md` – design frakčného vplyvu (chýba)
 - `docs/MODDING.md` – API pre tretie strany (v0.5+)
 - `KNOWN_ISSUES.md` – aktívne bugy (vytvoríme pri prvom bugu)

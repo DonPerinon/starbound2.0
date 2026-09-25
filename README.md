@@ -30,14 +30,17 @@ Viď `.claude/agents/` pre definície.
 
 ## Status
 
-**Aktuálna fáza:** Setup (pred-implementácia)
+**Aktuálna fáza:** Pred-implementácia, prototypovanie storage vrstvy
 
 **Hotové:**
 - ✅ Project vision (`docs/vision.md`)
-- ✅ Foundation (CLAUDE.md, štruktúra, architect agent)
+- ✅ Foundation (CLAUDE.md, štruktúra, architect + systems-coder agent)
+- ✅ Design doc pre Dynamic Pricing System (`docs/economy-system.md`, v1 draft)
+- ✅ Prototyp Q1/Q2 storage test (`prototypes/q1_q2_storage_test/`, čaká na spustenie)
+- ✅ Analýza stavu a plánovaných features (`docs/planned-features-analysis.md`)
 
 **Najbližší míľnik:**
-- ⏳ Design doc pre Dynamic Pricing System
+- ⏳ Výsledky prototypu Q1/Q2 zapísané do economy docu, potom storage layer DPS
 
 **Verzia:** v0.0.1
 

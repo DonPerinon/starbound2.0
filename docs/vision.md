@@ -137,6 +137,6 @@ Tieto míľniky sa používajú naprieč dokumentom ako reference body pre incre
 
 - **Verzia**: v3
 - **Dátum**: 2026-05-24
-- **Fáza projektu**: Setup (pred-implementácia)
-- **Nasledujúci míľnik**: Design doc pre Dynamic Pricing System (`docs/economy-system.md`)
+- **Fáza projektu**: Pred-implementácia, prototypovanie storage vrstvy
+- **Nasledujúci míľnik**: výsledky prototypu Q1/Q2 zapísané do `docs/economy-system.md`, potom storage layer DPS
 - Tento dokument je živý – aktualizuje sa pri každej zmene scope alebo pillarov.
