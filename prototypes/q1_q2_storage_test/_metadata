@@ -1,0 +1,9 @@
+{
+  "name" : "sb2_q1_q2_storage_test",
+  "friendlyName" : "SB2 Q1/Q2 Storage Test",
+  "version" : "0.0.1",
+  "author" : "Starbound 2.0 prototyping",
+  "description" : "Disposable prototype mod: overuje world.setProperty size limit (Q1) a dostupne metody atomic file write v Lua sandboxe (Q2). Vymazat po skonceni testovania.",
+  "includes" : [],
+  "priority" : 0
+}

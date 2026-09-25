@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starbound 2.0 — In-game Mockups</title>
+<style>
+  :root{
+    --space:#05060e;
+    --space-2:#0a0d1d;
+    /* Starbound-ish panel palette */
+    --pn:#222c41;        /* panel fill          */
+    --pn-2:#1a2233;      /* panel fill darker   */
+    --pn-3:#141b29;      /* slot well           */
+    --bevel-lt:#3c4d70;  /* light bevel edge    */
+    --bevel-dk:#070a12;  /* dark bevel edge     */
+    --ink:#e9edf8;
+    --dim:#8a97ba;
+    --teal:#5fd9c6;      /* SB2 accent / UI glow */
+    --gold:#ffd35c;      /* pixels currency      */
+    --hp:#e2484d;
+    --en:#f2b13c;
+    --up:#ff6a5e;        /* price up (red)       */
+    --down:#71e07a;      /* price down (green)   */
+    --apex:#c678dd;
+    --floran:#7bd86a;
+    --human:#56a8ff;
+    --mono:"Courier New",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--space);
+    color:var(--ink);
+    font-family:var(--mono);
+    -webkit-font-smoothing:none;
+    image-rendering:pixelated;
+    line-height:1.5;
+  }
+  img,svg,.scene{image-rendering:pixelated}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+  /* ============================================================
+     TITLE SCREEN
+     ============================================================ */
+  .title{
+    position:relative;overflow:hidden;
+    min-height:74vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    border-bottom:2px solid var(--bevel-dk);
+    background:
+      radial-gradient(120% 80% at 50% 120%, #1d3a63 0 24%, #142a4b 24% 40%, transparent 40%),
+      radial-gradient(80% 60% at 18% 12%, rgba(198,120,221,.16), transparent 60%),
+      radial-gradient(70% 60% at 85% 20%, rgba(86,168,255,.14), transparent 60%),
+      var(--space);
+  }
+  .stars{position:absolute;inset:0;pointer-events:none;
+    background-image:
+      radial-gradient(1px 1px at 12% 22%,#fff,transparent),
+      radial-gradient(1px 1px at 28% 64%,#cfe,transparent),
+      radial-gradient(1px 1px at 47% 18%,#fff,transparent),
+      radial-gradient(1px 1px at 63% 48%,#9bf,transparent),
+      radial-gradient(1px 1px at 78% 28%,#fff,transparent),
+      radial-gradient(1px 1px at 88% 66%,#cdf,transparent),
+      radial-gradient(1px 1px at 38% 82%,#fff,transparent),
+      radial-gradient(1px 1px at 6% 50%,#bce,transparent),
+      radial-gradient(1px 1px at 70% 8%,#fff,transparent);
+    animation:tw 4s steps(2) infinite;
+  }
+  @keyframes tw{50%{opacity:.55}}
+  .title .badge-row{position:relative;z-index:2;margin-bottom:18px}
+  .tag{
+    display:inline-block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--teal);border:2px solid var(--bevel-dk);background:rgba(20,27,41,.7);
+    box-shadow:inset 0 0 0 2px #2c3a57;padding:6px 14px;
+  }
+  .title h1{
+    position:relative;z-index:2;margin:0;
+    font-size:clamp(44px,9vw,104px);font-weight:700;letter-spacing:.02em;
+    color:#fff;
+    text-shadow:0 4px 0 #0a0e18, 4px 0 0 var(--bevel-dk), 0 0 28px rgba(95,217,198,.35);
+  }
+  .title .sub{position:relative;z-index:2;color:var(--gold);font-size:14px;letter-spacing:.3em;margin-top:2px}
+  .title .pitch{position:relative;z-index:2;max-width:620px;color:var(--dim);font-size:14px;margin:22px 16px 0}
+  .scroll-cue{position:relative;z-index:2;margin-top:34px;color:var(--dim);font-size:12px;letter-spacing:.2em;animation:bob 1.4s steps(2) infinite}
+  @keyframes bob{50%{transform:translateY(4px)}}
+  .planet-shadow{position:absolute;left:50%;bottom:-2px;width:140%;height:120px;transform:translateX(-50%);
+    background:radial-gradient(60% 120% at 50% 100%, rgba(0,0,0,.55), transparent 70%);pointer-events:none}
+
+  /* ============================================================
+     SCREENSHOT FRAME
+     ============================================================ */
+  section{padding:60px 0}
+  .scr-head{display:flex;align-items:center;gap:14px;margin:0 0 18px}
+  .scr-head .lbl{font-size:11px;letter-spacing:.28em;color:var(--teal);text-transform:uppercase;
+    border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 2px #2c3a57;background:var(--pn-2);padding:5px 11px}
+  .scr-head h2{font-size:20px;margin:0;letter-spacing:.04em;color:#fff}
+  .scr-head .pillar{margin-left:auto;font-size:12px;color:var(--dim)}
+
+  .screen{
+    position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;
+    background:var(--space-2);
+    border:3px solid #0a0e18;
+    box-shadow:inset 0 0 0 3px #2c3a57, inset 0 0 0 6px #0a0e18, 0 14px 40px rgba(0,0,0,.6);
+  }
+  /* CRT scanline + vignette overlay → reads as a captured frame */
+  .screen::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:40;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,.10) 2px 3px);
+    box-shadow:inset 0 0 120px rgba(0,0,0,.55);
+  }
+  .cap{display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.06em}
+  .cap b{color:var(--gold);font-weight:400}
+
+  /* --- scenes --- */
+  .scene{position:absolute;inset:0;z-index:0}
+  .scene.dock{
+    background:
+      radial-gradient(120% 90% at 50% 135%, #244a78 0 22%, #16335a 22% 36%, transparent 36%),
+      linear-gradient(180deg,#06122a 0%, #0a1730 55%, #0e1d3a 100%);
+  }
+  .scene.dock .stars{position:absolute;inset:0}
+  .scene.interior{
+    background:
+      linear-gradient(180deg,#0c1426 0%,#0c1426 62%, #131d33 62%, #131d33 100%);
+  }
+  .scene.interior::before{ /* floor grid */
+    content:"";position:absolute;left:0;right:0;bottom:0;height:38%;
+    background-image:
+      linear-gradient(90deg,#22304d 2px,transparent 2px),
+      linear-gradient(#22304d 2px,transparent 2px);
+    background-size:48px 24px;opacity:.5;
+  }
+  .scene.starmap{
+    background:radial-gradient(140% 120% at 50% 40%, #0f1a39 0 40%, #080d1f 100%);
+  }
+  .scene.starmap::before{ /* map grid */
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(90deg,rgba(95,217,198,.07) 1px,transparent 1px),
+      linear-gradient(rgba(95,217,198,.07) 1px,transparent 1px);
+    background-size:40px 40px;
+  }
+  /* a distant planet sliver for dock scene */
+  .planet{position:absolute;border-radius:50%;z-index:1}
+  .planet.big{
+    width:46%;aspect-ratio:1;left:-12%;bottom:-26%;
+    background:radial-gradient(circle at 38% 32%, #6fae6a 0 28%, #4e8c52 28% 52%, #3a6e44 52% 74%, #2c5638 74%);
+    box-shadow:inset -10px -8px 0 rgba(0,0,0,.35), 0 0 50px rgba(111,174,106,.25);
+  }
+  .planet.moon{width:9%;aspect-ratio:1;right:14%;top:14%;
+    background:radial-gradient(circle at 40% 35%, #cdd6ea 0 40%, #97a3c2 40% 70%, #6b7796 70%);}
+  .station-sil{position:absolute;right:8%;top:30%;width:30%;height:46%;z-index:1;opacity:.55;
+    background:
+      linear-gradient(180deg,#1b2c4d,#0f1c36);
+    clip-path:polygon(0 40%,18% 40%,18% 12%,40% 12%,40% 0,60% 0,60% 12%,82% 12%,82% 40%,100% 40%,100% 70%,82% 70%,82% 100%,18% 100%,18% 70%,0 70%);
+    filter:drop-shadow(0 0 8px rgba(86,168,255,.2));
+  }
+
+  /* ============================================================
+     STARBOUND-STYLE WINDOW (pixel bevel panel)
+     ============================================================ */
+  .sbwin{
+    position:absolute;z-index:20;
+    background:var(--pn);
+    border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 2px var(--bevel-lt), inset 0 0 0 4px var(--pn-2), 0 8px 20px rgba(0,0,0,.5);
+    font-size:12px;
+  }
+  .sbwin .tbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:7px 10px;background:linear-gradient(180deg,#2e3c5a,#202b41);
+    border-bottom:2px solid var(--bevel-dk);
+    letter-spacing:.12em;font-size:11px;color:#bcccf0;text-transform:uppercase;
+  }
+  .sbwin .tbar .x{width:14px;height:14px;line-height:12px;text-align:center;
+    border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #4a5d85;background:#33405e;color:#8fa0c8;font-size:10px}
+  .sbwin .pad{padding:10px}
+
+  /* item slot */
+  .slot{
+    width:34px;height:34px;flex:0 0 34px;background:var(--pn-3);
+    border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #2b3850;
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .slot svg{width:22px;height:22px}
+  .slot .qty{position:absolute;right:1px;bottom:0;font-size:9px;color:#cfe;text-shadow:1px 1px 0 #000}
+
+  /* ---- merchant trade window ---- */
+  .merch{left:5%;top:9%;width:300px}
+  .merch .tabs{display:flex;gap:4px;margin-bottom:8px}
+  .merch .tab{flex:1;text-align:center;padding:5px;font-size:11px;letter-spacing:.1em;
+    background:var(--pn-3);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #2b3850;color:var(--dim)}
+  .merch .tab.on{background:#2a3a59;color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}
+  .mrow{display:flex;align-items:center;gap:9px;padding:5px;border:2px solid transparent}
+  .mrow .nm{flex:1;color:#dfe6f7}
+  .mrow .pr{display:flex;align-items:center;gap:4px;color:var(--gold)}
+  .mrow .pr svg{width:12px;height:12px}
+  .mrow.sel{border-color:var(--teal);background:rgba(95,217,198,.08);box-shadow:0 0 0 1px rgba(95,217,198,.2)}
+  .mrow .trend{font-size:10px;margin-left:6px}
+  .trend.u{color:var(--up)} .trend.d{color:var(--down)}
+  .merch .bal{display:flex;justify-content:space-between;align-items:center;margin-top:9px;
+    padding-top:8px;border-top:2px solid var(--bevel-dk);font-size:11px;color:var(--dim)}
+  .merch .bal b{color:var(--gold);font-weight:400;display:inline-flex;gap:4px;align-items:center}
+  .btn{margin-top:8px;text-align:center;padding:7px;letter-spacing:.16em;font-size:11px;color:#0b1018;
+    background:linear-gradient(180deg,#6fe6d3,#3bb7a4);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 1px #9ff3e6}
+
+  /* ---- SB2 dynamic-price tooltip popout ---- */
+  .pricepop{position:absolute;z-index:30;left:325px;top:34%;width:240px;
+    background:var(--pn-2);border:2px solid var(--teal);
+    box-shadow:inset 0 0 0 2px #0a0e18, 0 0 18px rgba(95,217,198,.25), 0 8px 22px rgba(0,0,0,.5)}
+  .pricepop::before{content:"";position:absolute;left:-9px;top:24px;width:0;height:0;
+    border:7px solid transparent;border-right-color:var(--teal)}
+  .pricepop .ph{padding:8px 10px;border-bottom:2px solid var(--bevel-dk);background:#16203a;
+    display:flex;justify-content:space-between;align-items:baseline}
+  .pricepop .ph .nm{color:#fff;font-size:12px}
+  .pricepop .ph .pr{color:var(--gold);font-size:15px}
+  .pricepop .ph .pr s{color:#56648a;font-size:11px;margin-right:5px}
+  .pricepop .pb{padding:9px 10px;display:grid;gap:7px}
+  .pricepop .reason{display:grid;grid-template-columns:46px 1fr;gap:8px;align-items:center;font-size:11px}
+  .pricepop .reason .d{text-align:right;font-weight:700}
+  .reason .d.u{color:var(--up)} .reason .d.d{color:var(--down)}
+  .pricepop .reason .lbl{color:#cdd7f0}
+  .pricepop .bar{grid-column:1/3;height:5px;background:#0e1626;border:1px solid #0a0e18;position:relative}
+  .pricepop .bar i{position:absolute;top:0;bottom:0;display:block;width:0;animation:fill .9s steps(8) .2s forwards}
+  .pricepop .bar i.u{left:50%;background:var(--up)}
+  .pricepop .bar i.d{right:50%;background:var(--down)}
+  @keyframes fill{to{width:var(--w)}}
+  .pricepop .src{padding:6px 10px;border-top:2px solid var(--bevel-dk);font-size:9px;color:#56648a;letter-spacing:.06em}
+
+  /* ---- breakdown panel ---- */
+  .bdwin{left:7%;top:7%;width:560px;max-width:86%}
+  .bdwin .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+  .chip{font-size:10px;letter-spacing:.06em;padding:4px 9px;color:var(--dim);
+    background:var(--pn-3);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #2b3850}
+  .chip.on{color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);background:#2a3a59}
+  table{width:100%;border-collapse:collapse;font-size:11px}
+  th{color:var(--dim);font-weight:400;text-align:right;padding:6px 7px;border-bottom:2px solid var(--bevel-dk);letter-spacing:.04em}
+  th:first-child,td:first-child{text-align:left}
+  td{text-align:right;padding:6px 7px;border-bottom:1px solid #0e1626;color:#cdd7f0}
+  td:first-child{color:#fff;display:flex;align-items:center;gap:7px}
+  td:first-child svg{width:16px;height:16px}
+  tr:last-child td{border-bottom:none}
+  .delta.u{color:var(--up)} .delta.d{color:var(--down)} .delta.f{color:var(--dim)}
+  .formula{margin-top:9px;padding-top:8px;border-top:2px solid var(--bevel-dk);font-size:10px;color:#56648a}
+
+  /* ---- faction status ---- */
+  .facwin{right:5%;top:9%;width:250px}
+  .facwin .row{display:flex;justify-content:space-between;margin:7px 0;font-size:11px}
+  .facwin .row .k{color:var(--dim)}
+  .meter{display:flex;gap:2px;margin-top:2px}
+  .meter i{width:7px;height:10px;background:#1b2740;border:1px solid #0a0e18}
+  .meter i.on{background:var(--apex)}
+  .meter.agro i.on{background:var(--up)}
+  .facwin .plan{margin-top:10px;padding-top:9px;border-top:2px solid var(--bevel-dk)}
+  .facwin .plan .k{color:var(--dim);font-size:10px;letter-spacing:.08em}
+  .facwin .plan .v{color:var(--apex);font-size:12px;margin-top:3px}
+  .facwin .plan .x{color:#56648a;font-size:10px}
+  /* influence spheres on map */
+  .sphere{position:absolute;border-radius:50%;z-index:5;mix-blend-mode:screen;
+    display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:.1em}
+  .sphere.apex{left:16%;top:24%;width:30%;aspect-ratio:1;background:radial-gradient(circle,rgba(198,120,221,.35),rgba(198,120,221,.05) 70%);color:#e9c4f4}
+  .sphere.floran{left:46%;top:46%;width:26%;aspect-ratio:1;background:radial-gradient(circle,rgba(123,216,106,.32),rgba(123,216,106,.04) 70%);color:#cdeec3}
+  .sphere.human{left:24%;top:54%;width:20%;aspect-ratio:1;background:radial-gradient(circle,rgba(86,168,255,.30),rgba(86,168,255,.04) 70%);color:#c3ddff}
+  .node{position:absolute;z-index:6;width:6px;height:6px;background:#fff;box-shadow:0 0 6px #fff}
+  .nodelbl{position:absolute;z-index:6;font-size:9px;color:#9fb0d6;letter-spacing:.06em}
+
+  /* ---- event log (emergent cascade) ---- */
+  .logwin{left:50%;top:8%;transform:translateX(-50%);width:540px;max-width:88%}
+  .logwin .pad{font-size:12px;line-height:1.9}
+  .logline{display:flex;gap:8px}
+  .logline .tick{color:#56648a;flex:0 0 54px;font-size:10px}
+  .logline .arr{color:#56648a}
+  .em-apex{color:var(--apex)} .em-up{color:var(--up)} .em-floran{color:var(--floran)} .em-gold{color:var(--gold)}
+  .logwin .foot{margin-top:10px;padding-top:9px;border-top:2px solid var(--bevel-dk);color:#56648a;font-size:10px}
+
+  /* ============================================================
+     HUD (over dock scene)
+     ============================================================ */
+  .hud{position:absolute;inset:0;z-index:25;pointer-events:none}
+  .vitals{position:absolute;left:14px;top:12px}
+  .vitals .vbar{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+  .vitals .vlab{width:12px;text-align:center;font-size:9px;color:#000;font-weight:700}
+  .vitals .seg{display:flex;gap:1px}
+  .vitals .seg i{width:10px;height:8px;background:#101827;border:1px solid #0a0e18}
+  .vitals .hp .vlab{background:var(--hp)} .vitals .en .vlab{background:var(--en)}
+  .vitals .hp i.on{background:var(--hp)} .vitals .en i.on{background:var(--en)}
+  .coords{position:absolute;right:14px;top:12px;text-align:right;font-size:11px;color:#aebbe0}
+  .coords .px{color:var(--gold);font-size:14px;display:inline-flex;align-items:center;gap:5px;justify-content:flex-end}
+  .coords .px svg{width:13px;height:13px}
+  .coords .loc{font-size:10px;color:#7a88ad;margin-top:2px;letter-spacing:.08em}
+  .hotbar{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:3px}
+  .hotbar .hs{width:32px;height:32px;background:rgba(20,27,41,.85);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 1px #2b3850;position:relative;display:flex;align-items:center;justify-content:center}
+  .hotbar .hs.on{box-shadow:inset 0 0 0 1px var(--teal);border-color:var(--teal)}
+  .hotbar .hs .n{position:absolute;left:1px;top:0;font-size:8px;color:#7a88ad}
+  .hotbar .hs svg{width:18px;height:18px}
+
+  /* a little NPC merchant terminal sprite in the dock scene */
+  .merchant-npc{position:absolute;z-index:10;right:30%;bottom:10%;width:42px;height:64px}
+
+  /* ============================================================
+     CODEX (pillars + roadmap) — kept, styled as in-game panels
+     ============================================================ */
+  .codex h2.big{font-size:22px;color:#fff;letter-spacing:.04em;margin:0 0 4px}
+  .codex .csub{color:var(--dim);font-size:13px;margin:0 0 22px}
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+  .pcard{background:var(--pn);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 2px var(--bevel-lt), inset 0 0 0 4px var(--pn-2);padding:18px;position:relative}
+  .pcard .top{height:3px;position:absolute;left:4px;right:4px;top:4px;background:var(--c,var(--teal))}
+  .pcard .ico{width:30px;height:30px;margin-bottom:8px}
+  .pcard h3{margin:0 0 6px;font-size:15px;color:#fff;letter-spacing:.03em}
+  .pcard p{margin:0 0 14px;color:var(--dim);font-size:12px;line-height:1.6}
+  .st{font-size:10px;letter-spacing:.06em;padding:4px 8px;border:2px solid var(--bevel-dk)}
+  .st.done{color:var(--down);box-shadow:inset 0 0 0 1px rgba(113,224,122,.4)}
+  .st.plan{color:var(--dim);box-shadow:inset 0 0 0 1px #2b3850}
+
+  .road{display:grid;gap:12px;margin-top:14px}
+  .mile{display:grid;grid-template-columns:96px 1fr;gap:18px;align-items:start;
+    background:var(--pn);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 2px var(--bevel-lt),inset 0 0 0 4px var(--pn-2);padding:16px 18px}
+  .mile.now{box-shadow:inset 0 0 0 2px var(--teal),inset 0 0 0 4px var(--pn-2),0 0 26px rgba(95,217,198,.12)}
+  .mile .ver{font-size:20px;font-weight:700;color:var(--human)}
+  .mile .nowt{display:inline-block;margin-top:6px;font-size:9px;letter-spacing:.12em;color:var(--teal);
+    border:2px solid var(--teal);padding:3px 6px}
+  .mile ul{margin:0;padding-left:16px}
+  .mile li{font-size:12px;margin:3px 0;color:#cdd7f0}
+  .mile li span{color:var(--dim);font-size:11px}
+
+  /* ===== combat arena ===== */
+  .scene.battle{background:
+    radial-gradient(120% 100% at 82% 18%, rgba(86,168,255,.12), transparent 55%),
+    radial-gradient(100% 100% at 12% 88%, rgba(255,106,94,.12), transparent 55%),
+    linear-gradient(180deg,#04060f,#080d1d)}
+  .pship{position:absolute;left:8%;top:46%;width:23%;z-index:8;filter:drop-shadow(0 0 10px rgba(95,217,198,.3))}
+  .eship{position:absolute;right:8%;top:24%;width:21%;z-index:8;filter:drop-shadow(0 0 10px rgba(255,106,94,.3))}
+  .shield{position:absolute;left:5%;top:40%;width:29%;aspect-ratio:1.7;border:2px solid rgba(95,217,198,.45);
+    border-radius:50%;z-index:7;box-shadow:inset 0 0 26px rgba(95,217,198,.18)}
+  .beam{position:absolute;left:30%;top:50%;width:46%;height:2px;z-index:9;transform:rotate(-12deg);transform-origin:left;
+    background:linear-gradient(90deg,rgba(95,217,198,0),#9ff3e6 35%,#fff);box-shadow:0 0 8px #5fd9c6}
+  .bolt{position:absolute;width:5px;height:5px;background:#ff8c42;box-shadow:0 0 6px #ff6a5e;z-index:9}
+  .tgt{right:5%;top:8%;width:228px}
+  .mod{margin:7px 0}
+  .mod .k{display:flex;justify-content:space-between;font-size:10px;color:#cdd7f0;margin-bottom:2px}
+  .mod .k .s{color:var(--dim)}
+  .hpbar{height:7px;background:#0e1626;border:1px solid #0a0e18;position:relative}
+  .hpbar i{display:block;height:100%}
+  .hpbar i.g{background:var(--down)} .hpbar i.y{background:var(--en)} .hpbar i.r{background:var(--up)}
+  .board{margin-top:10px;padding:8px;text-align:center;font-size:11px;letter-spacing:.1em;color:#0b1018;
+    background:linear-gradient(180deg,#6fe6d3,#3bb7a4);border:2px solid var(--bevel-dk);
+    box-shadow:inset 0 0 0 1px #9ff3e6;animation:pulse 1s steps(2) infinite}
+  @keyframes pulse{50%{filter:brightness(1.3)}}
+  .pstat{left:5%;bottom:8%;width:208px}
+  .pstat .k{display:flex;justify-content:space-between;font-size:10px;color:#cdd7f0;margin:6px 0 2px}
+  .pstat .k .s{color:var(--dim)}
+  .cool{display:flex;gap:3px;margin-top:4px}
+  .cool i{flex:1;height:6px;background:#0e1626;border:1px solid #0a0e18}
+  .cool i.rdy{background:var(--teal)}
+
+  /* ===== shipyard ===== */
+  .scene.bay{background:linear-gradient(180deg,#0a1120,#0d1426)}
+  .scene.bay::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(90deg,rgba(86,168,255,.06) 1px,transparent 1px),linear-gradient(rgba(86,168,255,.06) 1px,transparent 1px);
+    background-size:32px 32px}
+  .blueprint{position:absolute;left:6%;top:14%;width:55%;height:64%;z-index:6;border:2px dashed #2c3a57;background:rgba(12,20,38,.55)}
+  .bphull{position:absolute;left:8%;top:40%;width:84%;height:22%;background:#1c2944;border:2px solid #34466b}
+  .pslot{position:absolute;width:14%;aspect-ratio:1;border:2px solid var(--bevel-dk);background:var(--pn-3);
+    box-shadow:inset 0 0 0 1px #2b3850;display:flex;align-items:center;justify-content:center;z-index:7}
+  .pslot.empty{border-style:dashed;border-color:#3c4d70;background:transparent}
+  .pslot svg{width:58%;height:58%}
+  .pslot .tg{position:absolute;top:-13px;left:0;font-size:8px;color:var(--dim);letter-spacing:.05em}
+  .yardstat{right:5%;top:14%;width:198px}
+  .yardstat .k{display:flex;justify-content:space-between;font-size:11px;margin:5px 0;color:#cdd7f0}
+  .yardstat .k .s{color:var(--dim)} .yardstat .k b{color:var(--teal);font-weight:400}
+  .yardstat .warn{margin-top:9px;font-size:10px;color:var(--en);line-height:1.5}
+
+  /* ===== FU integration console ===== */
+  .scene.boot{background:linear-gradient(180deg,#060912,#0a0f1f)}
+  .console{left:6%;top:9%;width:520px;max-width:80%}
+  .console .pad{font-size:11px;line-height:1.85}
+  .cl{display:flex;gap:8px}
+  .cl .t{color:#56648a;flex:0 0 60px} .cl .ok{color:var(--down)} .cl .wr{color:var(--en)} .cl.d{color:#56648a}
+  .layer{right:6%;top:9%;width:186px}
+  .layer .lz{padding:9px;margin:7px 0;text-align:center;font-size:11px;border:2px solid var(--bevel-dk)}
+  .layer .lz.sb2{color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}
+  .layer .lz.fu{color:var(--floran);box-shadow:inset 0 0 0 1px rgba(123,216,106,.4)}
+  .layer .ar{text-align:center;color:#56648a;font-size:11px}
+
+  /* ===== concept gallery (10 new) ===== */
+  .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(218px,1fr));gap:14px;margin-top:18px}
+  .gc{background:var(--pn);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 2px var(--bevel-lt),inset 0 0 0 4px var(--pn-2);
+    padding:14px;display:flex;flex-direction:column}
+  .gc .mock{height:62px;background:var(--pn-3);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 1px #2b3850;
+    margin-bottom:10px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .gc .num{position:absolute;left:4px;top:2px;font-size:10px;color:#56648a;z-index:2}
+  .gc h4{margin:0 0 5px;font-size:13px;color:#fff;letter-spacing:.02em}
+  .gc p{margin:0 0 11px;font-size:11px;color:var(--dim);line-height:1.55;flex:1}
+  .gc .meta{display:flex;gap:5px;flex-wrap:wrap}
+  .gc .b{font-size:9px;letter-spacing:.03em;padding:3px 6px;border:2px solid var(--bevel-dk)}
+  .gc .b.pil{color:var(--teal)} .gc .b.ver{color:var(--human)} .gc .b.who{color:var(--gold)}
+  .mk-chart{display:flex;align-items:flex-end;gap:2px;height:36px}
+  .mk-chart i{width:5px;background:var(--teal)}
+  .mk-heat{display:flex;gap:2px} .mk-heat i{width:8px;height:15px;background:#1b2740;border:1px solid #0a0e18}
+  .mk-heat i.on{background:var(--up)}
+  .mk-bars{width:76%;display:grid;gap:4px}
+  .mk-bars i{height:8px;border:1px solid #0a0e18}
+  .mk-rep i{width:8px;height:15px;border:1px solid #0a0e18;display:inline-block;background:#1b2740}
+  .mk-rep i.on{background:var(--apex)}
+
+  /* ============================================================ */
+  footer{padding:46px 0 70px;border-top:2px solid var(--bevel-dk);text-align:center;color:var(--dim);font-size:12px}
+  .disc{max-width:680px;margin:0 auto 18px;padding:13px 16px;font-size:12px;color:var(--dim);
+    background:var(--pn-2);border:2px solid var(--bevel-dk);box-shadow:inset 0 0 0 2px #2c3a57}
+  footer code{color:var(--human)}
+
+  @media (max-width:680px){
+    .merch{width:62%;left:4%} .pricepop{left:auto;right:4%;top:50%;width:50%}
+    .pricepop::before{display:none}
+    .bdwin{width:92%;left:4%} .facwin{width:60%}
+    .merch .nm,.mrow .trend{font-size:10px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .stars,.scroll-cue{animation:none}
+    .pricepop .bar i{animation:none;width:var(--w)}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TITLE SCREEN ===================== -->
+<header class="title">
+  <div class="stars"></div>
+  <div class="badge-row"><span class="tag">Frackin' Universe · Extension Mod</span></div>
+  <h1>STARBOUND&nbsp;2.0</h1>
+  <div class="sub">L I V I N G&nbsp;&nbsp;G A L A X Y</div>
+  <p class="pitch">Galaxia prestáva byť kulisou. Ceny reagujú na ponuku a dopyt, frakcie si delia územie a obchodné cesty, a stretnutia vo vesmíre sa rozhodujú modulárnymi loďami.</p>
+  <div class="scroll-cue">▼ &nbsp;PREZRI SI HERNÉ OBRAZOVKY&nbsp; ▼</div>
+  <div class="planet-shadow"></div>
+</header>
+
+<div class="wrap">
+
+  <!-- ===================== SCREENSHOT 01 — TRADING ===================== -->
+  <section>
+    <div class="scr-head">
+      <span class="lbl">Screen 01</span>
+      <h2>Obchodovanie — Dynamic Pricing</h2>
+      <span class="pillar">Pillar · Living Economy · v0.1</span>
+    </div>
+
+    <div class="screen">
+      <div class="scene dock"><div class="stars"></div></div>
+      <div class="planet big"></div>
+      <div class="planet moon"></div>
+      <div class="station-sil"></div>
+
+      <!-- merchant NPC terminal sprite -->
+      <svg class="merchant-npc" viewBox="0 0 21 32" shape-rendering="crispEdges">
+        <rect x="6" y="2" width="9" height="2" fill="#2b3a57"/>
+        <rect x="5" y="4" width="11" height="14" fill="#1c293f"/>
+        <rect x="6" y="5" width="9" height="6" fill="#5fd9c6" opacity=".7"/>
+        <rect x="7" y="6" width="3" height="1" fill="#bff7ee"/>
+        <rect x="5" y="18" width="11" height="2" fill="#2b3a57"/>
+        <rect x="8" y="20" width="5" height="10" fill="#16223a"/>
+        <rect x="6" y="30" width="9" height="2" fill="#0a0e18"/>
+      </svg>
+
+      <!-- merchant trade window -->
+      <div class="sbwin merch">
+        <div class="tbar"><span>Terramart</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="tabs"><div class="tab on">KÚPIŤ</div><div class="tab">PREDAŤ</div></div>
+
+          <div class="mrow">
+            <div class="slot">
+              <svg viewBox="0 0 8 8" shape-rendering="crispEdges">
+                <rect x="3" y="1" width="2" height="1" fill="#6cc6ff"/><rect x="2" y="2" width="4" height="1" fill="#6cc6ff"/>
+                <rect x="1" y="3" width="6" height="2" fill="#3f9ee8"/><rect x="2" y="5" width="4" height="1" fill="#2a7fd0"/>
+                <rect x="2" y="2" width="1" height="1" fill="#bfe6ff"/>
+              </svg>
+            </div>
+            <span class="nm">Liquid Water</span>
+            <span class="pr">4 <svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="1" width="2" height="1" fill="#ffe08a"/><rect x="2" y="2" width="4" height="1" fill="#ffd35c"/><rect x="1" y="3" width="6" height="2" fill="#e0aa2c"/><rect x="2" y="5" width="4" height="1" fill="#c79320"/></svg></span>
+            <span class="trend d">▼20%</span>
+          </div>
+
+          <div class="mrow sel">
+            <div class="slot">
+              <svg viewBox="0 0 8 8" shape-rendering="crispEdges">
+                <rect x="3" y="0" width="2" height="1" fill="#9ff3e6"/><rect x="2" y="1" width="4" height="1" fill="#5fe0d0"/>
+                <rect x="1" y="2" width="6" height="2" fill="#3fc7b6"/><rect x="2" y="4" width="4" height="2" fill="#2ba89a"/>
+                <rect x="3" y="6" width="2" height="1" fill="#1f8378"/><rect x="2" y="2" width="1" height="1" fill="#dffdf7"/>
+              </svg>
+            </div>
+            <span class="nm">Core Fragment</span>
+            <span class="pr">64 <svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="1" width="2" height="1" fill="#ffe08a"/><rect x="2" y="2" width="4" height="1" fill="#ffd35c"/><rect x="1" y="3" width="6" height="2" fill="#e0aa2c"/><rect x="2" y="5" width="4" height="1" fill="#c79320"/></svg></span>
+            <span class="trend u">▲113%</span>
+          </div>
+
+          <div class="mrow">
+            <div class="slot">
+              <svg viewBox="0 0 8 8" shape-rendering="crispEdges">
+                <rect x="1" y="3" width="6" height="1" fill="#d6deee"/><rect x="1" y="4" width="6" height="2" fill="#9aa6c0"/>
+                <rect x="1" y="6" width="6" height="1" fill="#6b7488"/><rect x="1" y="3" width="6" height="1" fill="#d6deee"/>
+              </svg>
+            </div>
+            <span class="nm">Titanium Bar</span>
+            <span class="pr">16 <svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="1" width="2" height="1" fill="#ffe08a"/><rect x="2" y="2" width="4" height="1" fill="#ffd35c"/><rect x="1" y="3" width="6" height="2" fill="#e0aa2c"/><rect x="2" y="5" width="4" height="1" fill="#c79320"/></svg></span>
+            <span class="trend u">▲33%</span>
+          </div>
+
+          <div class="bal"><span>Tvoje pixely</span><b>12 480 <svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="1" width="2" height="1" fill="#ffe08a"/><rect x="2" y="2" width="4" height="1" fill="#ffd35c"/><rect x="1" y="3" width="6" height="2" fill="#e0aa2c"/><rect x="2" y="5" width="4" height="1" fill="#c79320"/></svg></b></div>
+          <div class="btn">KÚPIŤ ×1</div>
+        </div>
+      </div>
+
+      <!-- SB2 dynamic price tooltip -->
+      <div class="pricepop">
+        <div class="ph"><span class="nm">Core Fragment</span><span class="pr"><s>30</s>64</span></div>
+        <div class="pb">
+          <div class="reason"><span class="d u">+42%</span><span class="lbl">Supply / demand</span></div>
+          <div class="bar"><i class="u" style="--w:21%"></i></div>
+          <div class="reason"><span class="d u">+30%</span><span class="lbl">Blokáda Apexov</span></div>
+          <div class="bar"><i class="u" style="--w:15%"></i></div>
+          <div class="reason"><span class="d u">+20%</span><span class="lbl">Špecializácia (ťažba)</span></div>
+          <div class="bar"><i class="u" style="--w:10%"></i></div>
+        </div>
+        <div class="src">sb2.economy.reason.* · top 3 modifikátory</div>
+      </div>
+
+      <!-- HUD -->
+      <div class="hud">
+        <div class="vitals">
+          <div class="vbar hp"><span class="vlab">♥</span><span class="seg">
+            <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></div>
+          <div class="vbar en"><span class="vlab">⚡</span><span class="seg">
+            <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
+        </div>
+        <div class="coords">
+          <div class="px">12 480 <svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="1" width="2" height="1" fill="#ffe08a"/><rect x="2" y="2" width="4" height="1" fill="#ffd35c"/><rect x="1" y="3" width="6" height="2" fill="#e0aa2c"/><rect x="2" y="5" width="4" height="1" fill="#c79320"/></svg></div>
+          <div class="loc">α CENTAURI · OUTPOST TERRAMART</div>
+        </div>
+        <div class="hotbar">
+          <div class="hs on"><span class="n">1</span><svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="1" width="1" height="5" fill="#b6c0d6"/><rect x="2" y="1" width="3" height="1" fill="#e6ecf7"/></svg></div>
+          <div class="hs"><span class="n">2</span><svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="1" y="3" width="6" height="2" fill="#5fe0d0"/></svg></div>
+          <div class="hs"><span class="n">3</span></div>
+          <div class="hs"><span class="n">4</span></div>
+          <div class="hs"><span class="n">5</span></div>
+          <div class="hs"><span class="n">6</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Merchant UI hook — single point patch (vanilla NPC + FU terramart)</span><span>cena ukazuje <b>prečo</b>, nie len koľko</span></div>
+  </section>
+
+  <!-- ===================== SCREENSHOT 02 — BREAKDOWN PANEL ===================== -->
+  <section>
+    <div class="scr-head">
+      <span class="lbl">Screen 02</span>
+      <h2>SB2 Market — Breakdown Terminal</h2>
+      <span class="pillar">Object · sb2_market · read-only</span>
+    </div>
+
+    <div class="screen">
+      <div class="scene interior"></div>
+
+      <div class="sbwin bdwin">
+        <div class="tbar"><span>SB2 Market · outpost_terramart_01 · day 145</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="filters">
+            <span class="chip on">všetko</span><span class="chip">ore</span><span class="chip">food</span>
+            <span class="chip">refined_metal</span><span class="chip">len changed today</span>
+          </div>
+          <table>
+            <thead><tr><th>item</th><th>base</th><th>M_local</th><th>A_reg</th><th>M_glob</th><th>tlak</th><th>final</th><th>Δ včera</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="1" width="2" height="1" fill="#6cc6ff"/><rect x="2" y="2" width="4" height="1" fill="#6cc6ff"/><rect x="1" y="3" width="6" height="2" fill="#3f9ee8"/><rect x="2" y="5" width="4" height="1" fill="#2a7fd0"/></svg>liquidwater</td>
+                <td>5</td><td>0.85</td><td>−0.05</td><td>1.00</td><td>−8%</td><td>4</td><td class="delta d">−20%</td>
+              </tr>
+              <tr>
+                <td><svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="0" width="2" height="1" fill="#9ff3e6"/><rect x="2" y="1" width="4" height="1" fill="#5fe0d0"/><rect x="1" y="2" width="6" height="2" fill="#3fc7b6"/><rect x="2" y="4" width="4" height="2" fill="#2ba89a"/><rect x="3" y="6" width="2" height="1" fill="#1f8378"/></svg>corefragment</td>
+                <td>30</td><td>1.70</td><td>+0.30</td><td>1.00</td><td>0%</td><td>64</td><td class="delta u">+113%</td>
+              </tr>
+              <tr>
+                <td><svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="1" y="3" width="6" height="1" fill="#d6deee"/><rect x="1" y="4" width="6" height="2" fill="#9aa6c0"/><rect x="1" y="6" width="6" height="1" fill="#6b7488"/></svg>titaniumbar</td>
+                <td>12</td><td>1.10</td><td>+0.00</td><td>1.18</td><td>+2%</td><td>16</td><td class="delta u">+33%</td>
+              </tr>
+              <tr>
+                <td><svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="1" width="2" height="1" fill="#ffb066"/><rect x="2" y="2" width="4" height="4" fill="#ff8c42"/><rect x="3" y="6" width="2" height="1" fill="#c75a1f"/><rect x="3" y="2" width="1" height="1" fill="#ffd9b3"/></svg>plasmagrenade</td>
+                <td>45</td><td>0.96</td><td>+0.10</td><td>1.00</td><td>0%</td><td>48</td><td class="delta f">+6%</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="formula">final = base × M_local × (1 + A_regional) × M_global × (1 + tlak) &nbsp;·&nbsp; clamp [0.1× … 10×]</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Placeable terminál — plný breakdown všetkých tracked items na stanici</span><span>read-only · obchod cez merchanta</span></div>
+  </section>
+
+  <!-- ===================== SCREENSHOT 03 — FACTION MAP ===================== -->
+  <section>
+    <div class="scr-head">
+      <span class="lbl">Screen 03</span>
+      <h2>Mapa vplyvu — Faction AI</h2>
+      <span class="pillar">Pillar · Faction Influence · v0.1→v1.0</span>
+    </div>
+
+    <div class="screen">
+      <div class="scene starmap"></div>
+      <div class="sphere apex">APEX</div>
+      <div class="sphere floran">FLORAN</div>
+      <div class="sphere human">PROTECTORATE</div>
+      <div class="node" style="left:30%;top:38%"></div><div class="nodelbl" style="left:32%;top:34%">Alpha Centauri</div>
+      <div class="node" style="left:55%;top:55%"></div><div class="nodelbl" style="left:57%;top:51%">Fenrir</div>
+      <div class="node" style="left:33%;top:60%"></div><div class="nodelbl" style="left:35%;top:62%">Sol Outpost</div>
+      <div class="node" style="left:62%;top:30%"></div>
+
+      <div class="sbwin facwin">
+        <div class="tbar"><span>Frakcia · Apex</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="row"><span class="k">Vplyv v sektore</span><span>61%</span></div>
+          <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+          <div class="row" style="margin-top:10px"><span class="k">Agresia</span><span style="color:var(--up)">vysoká</span></div>
+          <div class="meter agro"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+          <div class="row" style="margin-top:10px"><span class="k">Potraviny</span><span style="color:var(--up)">nízke −18%</span></div>
+          <div class="plan">
+            <div class="k">PLÁNOVANÁ AKCIA →</div>
+            <div class="v">Blokáda systému Alpha Centauri</div>
+            <div class="x">spustené z: hunger &gt; threshold · expiruje day 158</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Frakčná AI je čitateľná — stav, motivácia aj plánovaná akcia sú viditeľné</span><span>rules-based → utility → personality</span></div>
+  </section>
+
+  <!-- ===================== SCREENSHOT 04 — EMERGENT CASCADE ===================== -->
+  <section>
+    <div class="scr-head">
+      <span class="lbl">Screen 04</span>
+      <h2>Galaxy Event Log — Emergent Storytelling</h2>
+      <span class="pillar">Pillar · príbeh zo systémov</span>
+    </div>
+
+    <div class="screen">
+      <div class="scene starmap"></div>
+      <div class="sbwin logwin">
+        <div class="tbar"><span>Galaxy Log · α Centauri · day 145–151</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="logline"><span class="tick">day 145</span><span><span class="em-apex">Apex</span> vyhlasuje blokádu systému.</span></div>
+          <div class="logline"><span class="tick">day 146</span><span class="arr">↳</span><span>cena potravín <span class="em-up">+30%</span> naprieč stanicami.</span></div>
+          <div class="logline"><span class="tick">day 148</span><span class="arr">&nbsp;&nbsp;↳</span><span>konvoje sa stávajú lukratívnym cieľom.</span></div>
+          <div class="logline"><span class="tick">day 149</span><span class="arr">&nbsp;&nbsp;&nbsp;&nbsp;↳</span><span><span class="em-up">Piráti</span> útočia na trade hub Fenrir.</span></div>
+          <div class="logline"><span class="tick">day 151</span><span class="arr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳</span><span><span class="em-floran">Floran</span> stráca vplyv → <span class="em-gold">vyhlasuje vojnu</span>.</span></div>
+          <div class="foot">Nikto to nenaskriptoval. Vzniklo z interakcie ekonomiky ↔ vplyvu ↔ combatu.</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Mod dodáva mechaniky — hráč si píše vlastný príbeh</span><span>žiadne skriptované questy</span></div>
+  </section>
+
+  <!-- ===================== SCREENSHOT 05 — COMBAT ===================== -->
+  <section>
+    <div class="scr-head">
+      <span class="lbl">Screen 05</span>
+      <h2>Vesmírny súboj — Tactical Combat</h2>
+      <span class="pillar">Pillar · Tactical Space Combat · v1.0</span>
+    </div>
+
+    <div class="screen">
+      <div class="scene battle"><div class="stars"></div></div>
+      <div class="shield"></div>
+
+      <!-- player ship (facing right) -->
+      <svg class="pship" viewBox="0 0 72 40" shape-rendering="crispEdges">
+        <rect x="0" y="17" width="4" height="6" fill="#5fd9c6"/>
+        <rect x="4" y="13" width="14" height="14" fill="#2b3a57"/>
+        <rect x="20" y="6" width="12" height="6" fill="#243149"/>
+        <rect x="20" y="28" width="12" height="6" fill="#243149"/>
+        <rect x="18" y="12" width="24" height="16" fill="#34466b"/>
+        <rect x="42" y="14" width="10" height="8" fill="#56a8ff"/>
+        <rect x="40" y="15" width="2" height="6" fill="#bff7ee"/>
+        <rect x="52" y="16" width="12" height="6" fill="#3a4d70"/>
+        <rect x="64" y="18" width="8" height="2" fill="#9ff3e6"/>
+      </svg>
+      <div class="beam"></div>
+      <div class="bolt" style="left:58%;top:34%"></div>
+      <div class="bolt" style="left:65%;top:30%"></div>
+
+      <!-- enemy ship (facing left, damaged) -->
+      <svg class="eship" viewBox="0 0 72 40" shape-rendering="crispEdges">
+        <rect x="48" y="14" width="16" height="12" fill="#2a2138"/>
+        <rect x="64" y="18" width="4" height="4" fill="#ff8c42"/>
+        <rect x="40" y="6" width="12" height="6" fill="#2a1f3c"/>
+        <rect x="40" y="28" width="12" height="6" fill="#2a1f3c"/>
+        <rect x="12" y="12" width="36" height="16" fill="#3a2b4f"/>
+        <rect x="14" y="14" width="8" height="8" fill="#c678dd"/>
+        <rect x="4" y="16" width="10" height="6" fill="#4a2b3f"/>
+        <rect x="0" y="18" width="4" height="2" fill="#ff6a5e"/>
+        <rect x="30" y="12" width="8" height="6" fill="#140e10"/>
+        <rect x="31" y="9" width="1" height="1" fill="#ffd35c"/>
+        <rect x="36" y="8" width="1" height="1" fill="#ff8c42"/>
+        <rect x="34" y="10" width="1" height="1" fill="#ff6a5e"/>
+      </svg>
+
+      <!-- target panel -->
+      <div class="sbwin tgt">
+        <div class="tbar"><span>Cieľ · Apex Raider</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="mod"><div class="k"><span>Štíty</span><span class="s">0 / 120</span></div><div class="hpbar"><i class="r" style="width:0%"></i></div></div>
+          <div class="mod"><div class="k"><span>Zbraňový modul</span><span class="s">DESTROYED</span></div><div class="hpbar"><i class="r" style="width:5%"></i></div></div>
+          <div class="mod"><div class="k"><span>Trup</span><span class="s">58 / 100</span></div><div class="hpbar"><i class="y" style="width:58%"></i></div></div>
+          <div class="mod"><div class="k"><span>Motor</span><span class="s">90 / 100</span></div><div class="hpbar"><i class="g" style="width:90%"></i></div></div>
+          <div class="board">⌖ [F] BOARDING — štíty padli</div>
+        </div>
+      </div>
+
+      <!-- player status -->
+      <div class="sbwin pstat">
+        <div class="tbar"><span>Tvoja loď · Corvette</span></div>
+        <div class="pad">
+          <div class="k"><span>Štíty</span><span class="s">84 / 100</span></div><div class="hpbar"><i class="g" style="width:84%"></i></div>
+          <div class="k"><span>Energia</span><span class="s">61 / 100</span></div><div class="hpbar"><i style="width:61%;background:var(--en)"></i></div>
+          <div class="k"><span>Zbrane — cooldown</span><span class="s">2/3 RDY</span></div>
+          <div class="cool"><i class="rdy"></i><i class="rdy"></i><i></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Real-time 2D aréna · každý modul má HP a energetický odber</span><span>vyradiť štíty → boarding</span></div>
+  </section>
+
+  <!-- ===================== SCREENSHOT 06 — SHIPYARD ===================== -->
+  <section>
+    <div class="scr-head">
+      <span class="lbl">Screen 06</span>
+      <h2>Lodenica — Modular Loadout</h2>
+      <span class="pillar">Pillar · Tactical Combat · v1.0</span>
+    </div>
+
+    <div class="screen">
+      <div class="scene bay"></div>
+      <div class="blueprint">
+        <div class="bphull"></div>
+        <div class="pslot" style="left:12%;top:18%"><span class="tg">WEAPON</span>
+          <svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="1" y="3" width="5" height="2" fill="#3a4d70"/><rect x="6" y="3" width="2" height="2" fill="#9ff3e6"/></svg></div>
+        <div class="pslot" style="left:38%;top:18%"><span class="tg">SHIELD</span>
+          <svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="2" y="1" width="4" height="2" fill="#5fd9c6"/><rect x="1" y="3" width="6" height="2" fill="#3bb7a4"/><rect x="3" y="5" width="2" height="2" fill="#2ba89a"/></svg></div>
+        <div class="pslot empty" style="left:64%;top:18%"><span class="tg">SYSTEM</span><span style="color:#3c4d70;font-size:16px">+</span></div>
+        <div class="pslot" style="left:38%;top:68%"><span class="tg">ENGINE</span>
+          <svg viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="2" y="2" width="4" height="4" fill="#2b3a57"/><rect x="0" y="3" width="2" height="2" fill="#5fd9c6"/></svg></div>
+      </div>
+
+      <div class="sbwin yardstat">
+        <div class="tbar"><span>Corvette · Loadout</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="k"><span>Trup HP</span><b>100</b></div>
+          <div class="k"><span>Štíty</span><b>120</b></div>
+          <div class="k"><span>Energia</span><b>61 / 80</b></div>
+          <div class="k"><span>Hmotnosť</span><b>3.4 t</b></div>
+          <div class="k"><span>Voľné sloty</span><b>1</b></div>
+          <div class="warn">⚠ Energetický odber blízko limitu — pridaj reaktor alebo zníž záťaž zbraní.</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Trup + sloty (weapon / shield / system / engine) · moduly definované v JSON</span><span>data-driven · modding-ready</span></div>
+  </section>
+
+  <!-- ===================== SCREENSHOT 07 — FU INTEGRATION ===================== -->
+  <section>
+    <div class="scr-head">
+      <span class="lbl">Screen 07</span>
+      <h2>FU Integrácia — Compatibility Layer</h2>
+      <span class="pillar">Pillar · FU-Native Integration · od dňa 1</span>
+    </div>
+
+    <div class="screen">
+      <div class="scene boot"><div class="stars"></div></div>
+      <div class="sbwin console">
+        <div class="tbar"><span>SB2 · Init Log</span><span class="x">×</span></div>
+        <div class="pad">
+          <div class="cl"><span class="t">[boot]</span><span class="ok">✓</span><span>Frackin' Universe 6.5.1 detekované (range 6.4.0 – 6.5.x)</span></div>
+          <div class="cl"><span class="t">[patch]</span><span class="ok">✓</span><span>merchant.lua hook — single point patch (RFC 6902)</span></div>
+          <div class="cl"><span class="t">[schema]</span><span class="ok">✓</span><span>market_state v1 · economy_global v1</span></div>
+          <div class="cl"><span class="t">[tags]</span><span class="ok">✓</span><span>248 FU itemov tracked · 0 taxonomy drift</span></div>
+          <div class="cl"><span class="t">[warn]</span><span class="wr">!</span><span>2 mody patchujú merchant.lua → viď KNOWN_ISSUES.md</span></div>
+          <div class="cl"><span class="t">[ok]</span><span class="ok">✓</span><span>Economy init OK · schema v1 fresh</span></div>
+          <div class="cl d" style="margin-top:7px"><span class="t"></span><span>// FU mimo range → graceful degradation, žiadny crash</span></div>
+        </div>
+      </div>
+      <div class="sbwin layer">
+        <div class="tbar"><span>Vrstvy</span></div>
+        <div class="pad">
+          <div class="lz sb2">Starbound 2.0<br><span style="color:#56648a;font-size:9px">JSON patche · runtime hooks</span></div>
+          <div class="ar">▲ vrstva nad</div>
+          <div class="lz fu">Frackin' Universe<br><span style="color:#56648a;font-size:9px">balans · item pool · progression</span></div>
+          <div class="ar">▲ vrstva nad</div>
+          <div class="lz" style="color:#8a97ba">Vanilla Starbound</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><span>▸ Vrstva NAD FU, nie paralelný svet · nikdy neprepisuje FU balans</span><span>no silent failures</span></div>
+  </section>
+
+  <!-- ===================== CODEX: PILLARS ===================== -->
+  <section class="codex">
+    <h2 class="big">Core Pillars</h2>
+    <p class="csub">Päť systémov, ktoré spolu tvoria živú galaxiu.</p>
+    <div class="pillars">
+      <div class="pcard"><div class="top" style="--c:var(--teal)"></div>
+        <svg class="ico" viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="0" y="6" width="2" height="2" fill="#5fd9c6"/><rect x="3" y="3" width="2" height="5" fill="#5fd9c6"/><rect x="6" y="1" width="2" height="7" fill="#5fd9c6"/></svg>
+        <h3>Living Economy</h3><p>Dynamické ceny podľa lokálnej ponuky/dopytu, konvojov a špecializácie planét. Každá cena ukazuje dôvod.</p>
+        <span class="st done">✓ Design hotový · v0.1</span></div>
+      <div class="pcard"><div class="top" style="--c:var(--apex)"></div>
+        <svg class="ico" viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="1" y="1" width="3" height="3" fill="#c678dd"/><rect x="5" y="2" width="2" height="2" fill="#7bd86a"/><rect x="2" y="5" width="2" height="2" fill="#56a8ff"/></svg>
+        <h3>Faction Influence</h3><p>Sféry vplyvu rastú a strácajú sa cez trade huby a vojenskú prítomnosť. Vojny sa spúšťajú dynamicky.</p>
+        <span class="st plan">◷ Plánované · v0.1→v1.0</span></div>
+      <div class="pcard"><div class="top" style="--c:var(--up)"></div>
+        <svg class="ico" viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="0" width="2" height="2" fill="#ff6a5e"/><rect x="2" y="2" width="4" height="3" fill="#ff8c42"/><rect x="1" y="5" width="6" height="1" fill="#c75a1f"/><rect x="2" y="6" width="1" height="2" fill="#ffb066"/><rect x="5" y="6" width="1" height="2" fill="#ffb066"/></svg>
+        <h3>Tactical Space Combat</h3><p>Real-time 2D arény s modulárnymi loďami (trup + sloty). Boarding ako samostatná fáza.</p>
+        <span class="st plan">◷ Plánované · v1.0</span></div>
+      <div class="pcard"><div class="top" style="--c:var(--gold)"></div>
+        <svg class="ico" viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="3" y="0" width="2" height="2" fill="#ffd35c"/><rect x="0" y="3" width="2" height="2" fill="#ffd35c"/><rect x="6" y="3" width="2" height="2" fill="#ffd35c"/><rect x="3" y="6" width="2" height="2" fill="#ffd35c"/><rect x="3" y="3" width="2" height="2" fill="#fff"/></svg>
+        <h3>Emergent Storytelling</h3><p>Príbeh z konfliktu systémov: blokáda → hladomor → piráti → vojna. Mechaniky, nie skripty.</p>
+        <span class="st plan">◷ Naprieč verziami</span></div>
+      <div class="pcard"><div class="top" style="--c:var(--human)"></div>
+        <svg class="ico" viewBox="0 0 8 8" shape-rendering="crispEdges"><rect x="1" y="1" width="3" height="3" fill="#56a8ff"/><rect x="4" y="4" width="3" height="3" fill="#3a78c8"/><rect x="4" y="1" width="3" height="3" fill="#7fc0ff" opacity=".5"/></svg>
+        <h3>FU-Native Integration</h3><p>Vrstva NAD FU, nie paralelný svet. Stavia na FU dátach, rešpektuje balans cez JSON patche.</p>
+        <span class="st done">✓ Princíp od dňa 1</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== CODEX: ROADMAP ===================== -->
+  <section class="codex">
+    <h2 class="big">Version Roadmap</h2>
+    <p class="csub">Inkrementálny delivery — verzia je dosiahnutá až keď je splnené všetko v jej definícii.</p>
+    <div class="road">
+      <div class="mile now"><div><div class="ver">v0.1</div><span class="nowt">← TERAZ TU</span></div>
+        <ul><li>Dynamic Pricing System <span>(ceny sa hýbu, galaxia žije)</span></li>
+        <li>Dummy rules-based frakčná AI <span>(jednoduchý rozhodovací strom)</span></li>
+        <li>Data-driven JSON content, repo open-source</li></ul></div>
+      <div class="mile"><div><div class="ver">v0.5</div></div>
+        <ul><li>Utility AI vrstva pre frakcie</li>
+        <li>Dokumentované JSON schémy + docs/MODDING.md</li>
+        <li>Referenčný example extension mod</li></ul></div>
+      <div class="mile"><div><div class="ver">v1.0</div></div>
+        <ul><li>Modulárny vesmírny combat — lode + boarding</li>
+        <li>Personality modifiers <span>(Aggressor, Trader, Isolationist…)</span></li>
+        <li>Public Lua hooks pre tretie strany</li></ul></div>
+      <div class="mile"><div><div class="ver">v2.0+</div></div>
+        <ul><li>Goals / agendas pre frakcie</li>
+        <li>Inter-faction memory <span>(pamätá si zradu)</span></li>
+        <li>Prípadne Steam Workshop integrácia</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ===================== 10 NEW FEATURE CONCEPTS ===================== -->
+  <section class="codex">
+    <h2 class="big">10 nových features — koncept</h2>
+    <p class="csub">Návrhy, ktoré zapadajú do vízie: FU-native, transparent depth, emergentné zo systémov. Žiadne LLM dialógy, PvP ani RTS flotily.</p>
+    <div class="gal">
+
+      <div class="gc">
+        <div class="mock"><span class="num">01</span>
+          <svg viewBox="0 0 60 30" shape-rendering="crispEdges" style="width:80%">
+            <line x1="8" y1="22" x2="50" y2="8" stroke="#3c4d70" stroke-width="1" stroke-dasharray="2 2"/>
+            <rect x="6" y="20" width="4" height="4" fill="#5fd9c6"/><rect x="48" y="6" width="4" height="4" fill="#ffd35c"/>
+            <rect x="26" y="13" width="6" height="3" fill="#56a8ff"/><rect x="24" y="14" width="2" height="1" fill="#bff7ee"/>
+          </svg></div>
+        <h4>Trade Route Planner</h4>
+        <p>Zaregistruj konvojovú trasu, mod ti ukáže projektovaný arbitrage zisk a riziko podľa aktuálnych cien.</p>
+        <div class="meta"><span class="b pil">Economy</span><span class="b ver">v0.5</span><span class="b who">Trader</span></div>
+      </div>
+
+      <div class="gc">
+        <div class="mock"><span class="num">02</span>
+          <div class="mk-bars"><i style="background:#2a3a59"></i><i style="background:#243149"></i><i style="background:#2a3a59"></i></div>
+        </div>
+        <h4>Dynamic Contract Board</h4>
+        <p>Kontrakty generované zo stavu frakcií a ekonomiky (escort, zásob blokovaný systém, vyhubiť pirátov). Template-based, nie AI text.</p>
+        <div class="meta"><span class="b pil">Emergent</span><span class="b ver">v0.5</span><span class="b who">všetci</span></div>
+      </div>
+
+      <div class="gc">
+        <div class="mock"><span class="num">03</span>
+          <svg viewBox="0 0 24 24" shape-rendering="crispEdges" style="width:42%">
+            <rect x="7" y="11" width="10" height="9" fill="#34466b"/><rect x="5" y="9" width="14" height="2" fill="#56a8ff"/>
+            <rect x="10" y="3" width="4" height="4" fill="#5fd9c6"/><rect x="11" y="1" width="2" height="2" fill="#9ff3e6"/>
+            <rect x="9" y="14" width="6" height="6" fill="#1c2944"/>
+          </svg></div>
+        <h4>Player Trade Post</h4>
+        <p>Postav obchodný post — stane sa market node-om a reálne posúva regionálne ceny v sektore. Vizuálny progres.</p>
+        <div class="meta"><span class="b pil">Economy</span><span class="b ver">v1.0</span><span class="b who">Builder</span></div>
+      </div>
+
+      <div class="gc">
+        <div class="mock"><span class="num">04</span>
+          <div class="mk-chart"><i style="height:40%"></i><i style="height:55%"></i><i style="height:35%"></i><i style="height:70%"></i><i style="height:60%"></i><i style="height:85%"></i><i style="height:75%"></i><i style="height:100%"></i></div>
+        </div>
+        <h4>Price History Ticker</h4>
+        <p>Viacdňový graf ceny komodity per stanica s anotáciami dôvodov. Číta trh, predvída kaskády — čistá transparent depth.</p>
+        <div class="meta"><span class="b pil">Economy</span><span class="b ver">v0.5</span><span class="b who">Trader</span></div>
+      </div>
+
+      <div class="gc">
+        <div class="mock"><span class="num">05</span>
+          <div class="mk-rep"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+        </div>
+        <h4>Faction Standing &amp; Perks</h4>
+        <p>Reputácia per frakcia odomyká zľavy a prístup na ich stanice; nepriateľská frakcia dvíha ceny alebo odmietne obchod.</p>
+        <div class="meta"><span class="b pil">Faction</span><span class="b ver">v0.5</span><span class="b who">Strategy</span></div>
+      </div>
+
+      <div class="gc">
+        <div class="mock"><span class="num">06</span>
+          <svg viewBox="0 0 60 30" shape-rendering="crispEdges" style="width:82%">
+            <rect x="30" y="2" width="2" height="26" fill="#ff6a5e" opacity=".75"/><rect x="34" y="2" width="2" height="26" fill="#ff6a5e" opacity=".4"/>
+            <rect x="10" y="13" width="14" height="5" fill="#5fd9c6"/><rect x="8" y="14" width="2" height="3" fill="#9ff3e6"/>
+            <rect x="24" y="14" width="4" height="3" fill="#5fd9c6" opacity=".5"/>
+          </svg></div>
+        <h4>Blockade Running</h4>
+        <p>Prepašuj tovar cez blokádu za cenové prémie — s rizikom interdikcie. Spája combat s ekonomikou.</p>
+        <div class="meta"><span class="b pil">Economy×Combat</span><span class="b ver">v1.0</span><span class="b who">všetci</span></div>
+      </div>
+
+      <div class="gc">
+        <div class="mock"><span class="num">07</span>
+          <div class="mk-heat"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+        </div>
+        <h4>Regional Heat &amp; Pirate Threat</h4>
+        <p>Heat meter per systém dvíha nebezpečnosť konvojov a cenu poistenia. Emergentne rastie z blokád a vojen.</p>
+        <div class="meta"><span class="b pil">Faction×Combat</span><span class="b ver">v0.5</span><span class="b who">všetci</span></div>
+      </div>
+
+      <div class="gc">
+        <div class="mock"><span class="num">08</span>
+          <svg viewBox="0 0 60 30" shape-rendering="crispEdges" style="width:84%">
+            <rect x="24" y="10" width="12" height="10" fill="#34466b"/><rect x="22" y="8" width="16" height="2" fill="#56a8ff"/>
+            <rect x="2" y="13" width="8" height="4" fill="#ff6a5e"/><rect x="0" y="14" width="2" height="2" fill="#ff8c42"/>
+            <rect x="11" y="14" width="6" height="1" fill="#ff6a5e"/>
+            <rect x="50" y="13" width="8" height="4" fill="#5fd9c6"/><rect x="43" y="14" width="6" height="1" fill="#5fd9c6"/>
+          </svg></div>
+        <h4>NPC Base Raids — oboma smermi</h4>
+        <p>Frakcie podľa agresie a vplyvu prepadávajú tvoju základňu; ty môžeš raidovať ich základne. Pozemný boj v Starbound engine, výsledok hýbe vplyvom a ekonomikou.</p>
+        <div class="meta"><span class="b pil">Faction×Emergent</span><span class="b ver">v1.0</span><span class="b who">všetci</span></div>
+      </div>
+
+      <div class="gc">
+        <div class="mock"><span class="num">09</span>
+          <svg viewBox="0 0 32 12" shape-rendering="crispEdges" style="width:70%">
+            <rect x="2" y="2" width="4" height="3" fill="#e0b88a"/><rect x="2" y="5" width="4" height="4" fill="#3a4d70"/>
+            <rect x="13" y="2" width="4" height="3" fill="#cdd6ea"/><rect x="13" y="5" width="4" height="4" fill="#4a2b3f"/>
+            <rect x="24" y="2" width="4" height="3" fill="#9aa06a"/><rect x="24" y="5" width="4" height="4" fill="#2b3a57"/>
+          </svg></div>
+        <h4>Crew Roster &amp; Officers</h4>
+        <p>Najmi posádku so stat modifikátormi (gunner +reload, engineer +shield regen). Rules-based čísla, žiadne dialógy ani LLM.</p>
+        <div class="meta"><span class="b pil">Combat</span><span class="b ver">v1.0</span><span class="b who">všetci</span></div>
+      </div>
+
+      <div class="gc">
+        <div class="mock"><span class="num">10</span>
+          <svg viewBox="0 0 24 24" shape-rendering="crispEdges" style="width:44%">
+            <rect x="6" y="3" width="8" height="8" fill="#5fd9c6"/><rect x="7" y="11" width="6" height="3" fill="#3bb7a4"/><rect x="9" y="14" width="2" height="2" fill="#2ba89a"/>
+            <rect x="15" y="13" width="2" height="1" fill="#ffe08a"/><rect x="14" y="14" width="4" height="1" fill="#ffd35c"/><rect x="13" y="15" width="6" height="2" fill="#e0aa2c"/><rect x="14" y="17" width="4" height="1" fill="#c79320"/>
+          </svg></div>
+        <h4>Insurance &amp; Salvage Market</h4>
+        <p>Poisti konvoje proti stratám a predávaj salvage z vrakov. Uzatvára slučku risk → strata → trh s troskami.</p>
+        <div class="meta"><span class="b pil">Economy</span><span class="b ver">v1.0</span><span class="b who">Trader</span></div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="disc">⚠️ <b>Vizuálny statický mockup</b> pre prezentáciu plánovaných features. Žiadny Lua / herný kód, nie je súčasťou implementácie. UI a čísla sú ilustračné, odvodené z design dokumentov.</div>
+    Zdroj pravdy: <code>docs/vision.md</code> · <code>docs/economy-system.md</code><br>
+    Starbound 2.0 · FU Extension Mod · SP-first, co-op compatible
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "starbound-2.0",
+  "friendlyName": "Starbound 2.0 - FU Extension",
+  "description": "Living economy, faction influence, and space combat extension for Frackin' Universe",
+  "author": "Tvoje meno",
+  "version": "0.0.1",
+  "includes": ["FrackinUniverse"],
+  "priority": 9999
+}

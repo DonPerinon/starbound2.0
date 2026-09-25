@@ -1,0 +1,2 @@
+- [User role and expertise](user_role.md) — User is architect of SB2 mod, deep FU/Starbound knowledge, multi-agent workflow
+- [Q1/Q2 storage test prototype](project_prototype_q1q2.md) — Disposable prototype to answer world.setProperty limits and atomic write availability
