@@ -4,7 +4,17 @@
 -- Performance: one-time pri load
 -- Lua 5.1 striktne.
 
-local sb2_util = require("sb2_util")
+-- Internal: nacita zavislost v Starbounde (asset cesta, modul sa registruje ako
+-- global) aj v standalone Lua (package.path, modul vracia tabulku).
+local function sb2_load(name)
+  if _G[name] ~= nil then return _G[name] end
+  local ok, mod = pcall(require, name)
+  if ok and type(mod) == "table" then return mod end
+  require("/scripts/" .. name .. ".lua")
+  return _G[name]
+end
+
+local sb2_util = sb2_load("sb2_util")
 
 local sb2_migrations = {}
 
@@ -74,4 +84,5 @@ function sb2_migrations.migrate(state_type, state, current_version, hooks)
   return { state = working, migrated = true, from = version, to = current_version }
 end
 
+_G["sb2_migrations"] = sb2_migrations
 return sb2_migrations

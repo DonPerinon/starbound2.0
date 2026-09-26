@@ -57,4 +57,5 @@ function sb2_util.sortedKeys(tbl)
   return keys
 end
 
+_G["sb2_util"] = sb2_util
 return sb2_util

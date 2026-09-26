@@ -116,4 +116,5 @@ function Prng:setState(state)
   self.state = _normalizeSeed(state)
 end
 
+_G["sb2_prng"] = sb2_prng
 return sb2_prng

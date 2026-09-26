@@ -6,9 +6,19 @@
 -- Performance: recomputeItem hot path (<0.2 ms); dayTick cold path (<2 ms per market)
 -- Lua 5.1 striktne.
 
-local sb2_util = require("sb2_util")
-local sb2_pricing = require("sb2_pricing")
-local sb2_prng = require("sb2_prng")
+-- Internal: nacita zavislost v Starbounde (asset cesta, modul sa registruje ako
+-- global) aj v standalone Lua (package.path, modul vracia tabulku).
+local function sb2_load(name)
+  if _G[name] ~= nil then return _G[name] end
+  local ok, mod = pcall(require, name)
+  if ok and type(mod) == "table" then return mod end
+  require("/scripts/" .. name .. ".lua")
+  return _G[name]
+end
+
+local sb2_util = sb2_load("sb2_util")
+local sb2_pricing = sb2_load("sb2_pricing")
+local sb2_prng = sb2_load("sb2_prng")
 
 local sb2_market_state = {}
 
@@ -73,6 +83,7 @@ function sb2_market_state.ensureItem(state, item_name, base_price, params)
     player_pressure = 0.0,
     jitter = 0.0,
     last_final_price = base_price,
+    previous_final_price = base_price,
     top_reasons_cache = {}
   }
   state.items[item_name] = item
@@ -252,6 +263,7 @@ function sb2_market_state.dayTick(state, cfg, world_seed)
   local names = sb2_util.sortedKeys(state.items)
   for i = 1, #names do
     local item = state.items[names[i]]
+    item.previous_final_price = item.last_final_price   -- "delta vs vcera" pre breakdown (5.4)
     state.daily_turnover[names[i]] = 0
     item.player_pressure = 0.0
     _decayItem(item, state.day_index, 1, cfg)
@@ -278,6 +290,7 @@ function sb2_market_state.advanceTo(state, target_day, cfg, world_seed)
   state.day_index = target_day
   for i = 1, #names do
     local item = state.items[names[i]]
+    item.previous_final_price = item.last_final_price
     state.daily_turnover[names[i]] = 0
     item.player_pressure = 0.0
     _decayItem(item, state.day_index, elapsed, cfg)
@@ -290,12 +303,13 @@ end
 
 -- Public API (stable)
 -- Riadky pre breakdown panel (5.4): item | base | M_local | A_regional | M_global | tlak | final | delta vs vcera
+-- "vcera" = cena na konci predchadzajuceho dna (snapshot v dayTick / advanceTo)
 function sb2_market_state.breakdownRows(state, cfg)
   local rows = {}
   local names = sb2_util.sortedKeys(state.items)
   for i = 1, #names do
     local item = state.items[names[i]]
-    local previous = item.last_final_price or item.base_price
+    local previous = item.previous_final_price or item.base_price
     local result = sb2_pricing.computePrice(item, cfg)
     rows[#rows + 1] = {
       item = names[i],
@@ -313,4 +327,5 @@ function sb2_market_state.breakdownRows(state, cfg)
   return rows
 end
 
+_G["sb2_market_state"] = sb2_market_state
 return sb2_market_state

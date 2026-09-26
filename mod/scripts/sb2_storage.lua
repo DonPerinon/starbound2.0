@@ -7,8 +7,18 @@
 -- Performance: cold path (load pri prvej navsteve, save pri recompute)
 -- Lua 5.1 striktne.
 
-local sb2_util = require("sb2_util")
-local sb2_migrations = require("sb2_migrations")
+-- Internal: nacita zavislost v Starbounde (asset cesta, modul sa registruje ako
+-- global) aj v standalone Lua (package.path, modul vracia tabulku).
+local function sb2_load(name)
+  if _G[name] ~= nil then return _G[name] end
+  local ok, mod = pcall(require, name)
+  if ok and type(mod) == "table" then return mod end
+  require("/scripts/" .. name .. ".lua")
+  return _G[name]
+end
+
+local sb2_util = sb2_load("sb2_util")
+local sb2_migrations = sb2_load("sb2_migrations")
 
 local sb2_storage = {}
 
@@ -110,4 +120,5 @@ function sb2_storage.saveState(backend, key, state)
   backend.save(key, state)
 end
 
+_G["sb2_storage"] = sb2_storage
 return sb2_storage

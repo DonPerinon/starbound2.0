@@ -5,7 +5,17 @@
 -- Performance: one-time pri init (vysledok cache-ovat, nie volat v hot path)
 -- Lua 5.1 striktne.
 
-local sb2_util = require("sb2_util")
+-- Internal: nacita zavislost v Starbounde (asset cesta, modul sa registruje ako
+-- global) aj v standalone Lua (package.path, modul vracia tabulku).
+local function sb2_load(name)
+  if _G[name] ~= nil then return _G[name] end
+  local ok, mod = pcall(require, name)
+  if ok and type(mod) == "table" then return mod end
+  require("/scripts/" .. name .. ".lua")
+  return _G[name]
+end
+
+local sb2_util = sb2_load("sb2_util")
 
 local sb2_config = {}
 
@@ -31,4 +41,5 @@ function sb2_config.clearCache()
   cache = {}
 end
 
+_G["sb2_config"] = sb2_config
 return sb2_config

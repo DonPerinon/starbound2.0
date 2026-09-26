@@ -110,7 +110,9 @@ Každý netriviálny systém má design doc v `docs/` skôr ako vznikne Lua kód
 ## Aktuálny stav projektu
 - **Fáza**: Implementácia jadra DPS (čisté moduly hotové), engine hooky čakajú na prototypy
 - **Aktívny systém**: Dynamic Pricing System (v0.1)
-- **Hotové moduly**: `sb2_util`, `sb2_config`, `sb2_prng`, `sb2_economy_tags`, `sb2_pricing`, `sb2_market_state`, `sb2_migrations`, `sb2_storage` (testy: `python3 tools/run_lua_tests.py`)
+- **Hotové moduly**: `sb2_util`, `sb2_config`, `sb2_prng`, `sb2_economy_tags`, `sb2_pricing`, `sb2_market_state`, `sb2_migrations`, `sb2_storage`, `sb2_station`, `sb2_market_view` (testy: `python3 tools/run_lua_tests.py`)
+- **Hotové objekty**: `mod/objects/sb2_market/` – breakdown terminál (ScriptPane + server skript cez entity message, admin tlačidlo Seed demo), sprite je placeholder
+- **Načítavanie modulov**: každý modul v `mod/scripts/` sa dá načítať Starbound `require("/scripts/x.lua")` (registruje global) aj standalone `require("x")` (vracia tabuľku); nové moduly musia dodržať vzor `sb2_load` + `_G[...] =`
 - **Najbližší míľnik**: výsledky prototypov Q1/Q2 a Q3 (`prototypes/`) zapísané do `docs/economy-system.md`, potom universe backend, merchant hook, day tick host a `sb2_market` terminál
 - **Známa odchýlka od docu**: `trade_flow_arrival` cenu znižuje (viac ponuky), `departure` zvyšuje; doc 2.3/4.1 má znamienka nejednoznačné, vyriešiť pri revízii v2
 - **Analýza stavu**: `docs/planned-features-analysis.md` (2026-09-25)
@@ -118,7 +120,7 @@ Každý netriviálny systém má design doc v `docs/` skôr ako vznikne Lua kód
 ## Kľúčové dokumenty
 - `docs/vision.md` – celková vízia projektu (zdroj pravdy)
 - `docs/economy-system.md` – design ekonomického systému (v1 draft)
-- `docs/influence-system.md` – design frakčného vplyvu (chýba)
+- `docs/influence-system.md` – design frakčného vplyvu (v1 draft, v0.1 rozsah)
 - `docs/MODDING.md` – API pre tretie strany (v0.5+)
 - `KNOWN_ISSUES.md` – aktívne bugy (vytvoríme pri prvom bugu)
 

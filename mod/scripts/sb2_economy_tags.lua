@@ -5,7 +5,17 @@
 -- Performance: cold path (jedno volanie per item pri init / prvom obchode)
 -- Lua 5.1 striktne.
 
-local sb2_util = require("sb2_util")
+-- Internal: nacita zavislost v Starbounde (asset cesta, modul sa registruje ako
+-- global) aj v standalone Lua (package.path, modul vracia tabulku).
+local function sb2_load(name)
+  if _G[name] ~= nil then return _G[name] end
+  local ok, mod = pcall(require, name)
+  if ok and type(mod) == "table" then return mod end
+  require("/scripts/" .. name .. ".lua")
+  return _G[name]
+end
+
+local sb2_util = sb2_load("sb2_util")
 
 local sb2_economy_tags = {}
 
@@ -113,4 +123,5 @@ function sb2_economy_tags.scanTaxonomyDrift(tags_config, resolve_tags, max_sampl
   return result
 end
 
+_G["sb2_economy_tags"] = sb2_economy_tags
 return sb2_economy_tags

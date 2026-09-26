@@ -1,0 +1,27 @@
+{
+  "objectName" : "sb2_market",
+  "colonyTags" : ["commerce", "electronic"],
+  "rarity" : "Uncommon",
+  "category" : "decorative",
+  "price" : 0,
+  "printable" : false,
+  "description" : "SB2 trhovy terminal: rozpis dynamickych cien na tejto stanici. Iba na citanie.",
+  "shortdescription" : "SB2 Market Terminal",
+  "race" : "generic",
+  "objectType" : "object",
+  "health" : 3.0,
+  "interactive" : true,
+  "scripts" : ["/objects/sb2_market/sb2_market.lua"],
+  "scriptDelta" : 0,
+  "interactAction" : "ScriptPane",
+  "interactData" : "/objects/sb2_market/sb2_market_pane.config",
+  "inventoryIcon" : "sb2_market.png",
+  "orientations" : [
+    {
+      "image" : "sb2_market.png",
+      "imagePosition" : [0, 0],
+      "spaceScan" : 0.1,
+      "anchors" : ["bottom"]
+    }
+  ]
+}
